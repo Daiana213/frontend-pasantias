@@ -1,0 +1,159 @@
+/* Estilos generales */
+body {
+  font-family: var(--fuente-principal);
+  background-color: var(--color-secundario);
+  color: var(--color-primario);
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Evita scroll innecesario */
+}
+
+/* Fondo difuminado */
+.landing-bg {
+  min-height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-bg::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('../../assets/portada.jpg') center center / cover no-repeat;
+  filter: blur(6px) brightness(0.85);
+  opacity: 0.7;
+  z-index: 0;
+}
+
+/* Contenedor principal centrado */
+.landing-container {
+  text-align: center;
+  padding: 20px;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  margin: 0;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+}
+
+/* Encabezado */
+.landing-header {
+  background-color: var(--color-primario-claro);
+  padding: 20px;
+  color: var(--color-fondo);
+  border-radius: 10px;
+  font-family: var(--fuente-principal);
+}
+
+.logo {
+  width: 80px;
+  margin-bottom: 10px;
+}
+
+/* Texto */
+h1 {
+  font-size: 2rem;
+  margin: 10px 0;
+  font-family: var(--fuente-principal);
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  font-family: var(--fuente-principal);
+}
+
+/* Sección principal */
+.landing-main {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: var(--color-fondo);
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px var(--color-sombra);
+}
+
+/* Botones */
+.landing-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Espaciado entre los botones */
+  margin-top: 20px;
+}
+
+.landing-buttons button {
+  background-color: var(--color-boton);
+  color: var(--color-fondo);
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  min-width: 180px; /* Asegurar tamaño uniforme */
+  font-family: var(--fuente-principal);
+}
+
+.landing-buttons button:hover {
+  background-color: var(--color-boton-hover);
+  transform: scale(1.05); /* Pequeño efecto de crecimiento */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .landing-container {
+    padding: 10px;
+    max-width: 95vw;
+  }
+
+  .landing-header {
+    padding: 15px;
+  }
+
+  .landing-buttons {
+    flex-direction: column; /* Botones apilados en pantallas pequeñas */
+    gap: 10px;
+  }
+
+  .landing-buttons button {
+    width: 100%; /* Que ocupen todo el ancho en móviles */
+  }
+}
+
+.landing-img-blur {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-img-blur img {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  filter: blur(6px) brightness(0.85);
+  opacity: 0.7;
+  border-radius: 0;
+  transition: filter 0.3s, opacity 0.3s;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.landing-img-blur img:hover {
+  filter: blur(2px) brightness(1);
+  opacity: 1;
+}
+

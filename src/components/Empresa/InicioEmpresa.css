@@ -1,0 +1,153 @@
+.inicio-empresa-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--color-fondo);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-height: 100vh;
+}
+
+.inicio-header {
+  margin-bottom: 2rem;
+}
+
+.inicio-titulo {
+  color: var(--color-primario);
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+.inicio-info {
+  display: flex;
+  gap: 2rem;
+  color: var(--color-primario-claro);
+  font-size: 1rem;
+}
+
+.inicio-estadisticas {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.estadistica-card {
+  flex: 1;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.estadistica-card.postulaciones {
+  background-color: var(--color-secundario);
+}
+
+.estadistica-card.notificaciones {
+  background-color: var(--color-secundario);
+}
+
+.estadistica-numero {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--color-primario);
+}
+
+.estadistica-texto {
+  font-size: 0.9rem;
+  color: var(--color-primario-claro);
+}
+
+.inicio-secciones {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.inicio-bloque {
+  margin-bottom: 2rem;
+}
+
+.inicio-bloque h3 {
+  color: var(--color-primario);
+  margin-bottom: 1rem;
+}
+
+.inicio-cajas {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.inicio-caja {
+  padding: 1rem;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.inicio-caja.notificacion {
+  background-color: var(--color-secundario);
+}
+
+.inicio-caja.postulacion {
+  background-color: var(--color-secundario);
+}
+
+.inicio-caja.vacio {
+  color: var(--color-primario-claro);
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--color-secundario);
+}
+
+.inicio-caja h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--color-primario);
+}
+
+.inicio-caja p {
+  margin: 0 0 0.5rem 0;
+  color: var(--color-primario-claro);
+}
+
+.inicio-caja .fecha {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--color-primario-claro);
+  margin-top: 0.5rem;
+}
+
+.btn-cerrar-sesion {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+}
+
+.btn-cerrar-sesion:hover {
+  background-color: #c82333;
+}
+
+@media (max-width: 768px) {
+  .inicio-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .inicio-estadisticas {
+    flex-direction: column;
+  }
+
+  .inicio-cajas {
+    grid-template-columns: 1fr;
+  }
+}

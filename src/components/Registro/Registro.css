@@ -1,0 +1,102 @@
+body {
+  background: linear-gradient(135deg, var(--color-secundario), #f8fbff 80%);
+  min-height: 100vh;
+}
+
+.registro-container {
+  background: var(--color-fondo);
+  border-radius: 18px;
+  padding: 40px 32px 32px 32px;
+  box-shadow: 0 4px 24px var(--color-sombra);
+  margin: 60px auto 0 auto;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  font-family: var(--fuente-principal);
+  border: 1.5px solid var(--color-secundario-oscuro);
+}
+
+.registro-container h2 {
+  color: var(--color-primario);
+  margin-bottom: 8px;
+  font-size: 2rem;
+  font-family: var(--fuente-principal);
+}
+
+.registro-container p {
+  color: var(--color-texto-secundario);
+  margin-bottom: 28px;
+  font-size: 1.1rem;
+}
+
+.registro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.registro-form input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1.5px solid var(--color-borde);
+  font-size: 1rem;
+  font-family: var(--fuente-principal);
+  background: #f7faff;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.registro-form input:focus {
+  border: 1.5px solid var(--color-primario-claro);
+  box-shadow: 0 0 0 2px var(--color-secundario-oscuro);
+}
+
+.registro-form button {
+  background: var(--color-boton);
+  color: var(--color-fondo);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s, box-shadow 0.2s;
+  font-family: var(--fuente-principal);
+  font-weight: 600;
+  box-shadow: 0 2px 8px var(--color-sombra);
+}
+
+.registro-form button:hover {
+  background: var(--color-boton-hover);
+  box-shadow: 0 4px 16px var(--color-sombra);
+}
+
+.registro-link {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.registro-link button {
+  background: none;
+  color: var(--color-primario);
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 1rem;
+  padding: 0;
+  font-family: var(--fuente-principal);
+  transition: color 0.2s;
+}
+
+.registro-link button:hover {
+  color: var(--color-boton-hover);
+}
+
+@media (max-width: 600px) {
+  .registro-container {
+    padding: 24px 8px 18px 8px;
+  }
+} 
