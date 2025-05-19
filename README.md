@@ -15,11 +15,10 @@ Este proyecto busca digitalizar y optimizar el proceso de gestión de pasantías
 
 - **Frontend:** React + Vite.
 - **Backend:** Node y db.json (autenticación y base de datos).
-- **Despliegue:** GitHub Pages 
+- **Implementación y Despliegue:** GitHub Pages.  https://daiana213.github.io/frontend-pasantias/
 
-## Primera Iteración 
+## Iteraciones 
 - **Drive:** Contiene analisis, diseño y testing del proyecto. https://docs.google.com/document/d/1mfjj2wQ3ibJ2PUQFbZQSKmi4OrdLt5Vo/edit?usp=sharing&ouid=109915852570060500268&rtpof=true&sd=true
-- **Firebase:** Contiene la implementacion del proyecto (página web). https://daiana213.github.io/frontend-pasantias/
 
 
 
