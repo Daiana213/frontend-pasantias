@@ -1,5 +1,3 @@
-# React + Vite
-
 # Gestión de Pasantías Universitarias
 
 ## Descripción
