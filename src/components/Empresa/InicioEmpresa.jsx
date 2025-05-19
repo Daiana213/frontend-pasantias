@@ -3,6 +3,7 @@ import './InicioEmpresa.css';
 import { useNavigate } from 'react-router-dom';
 import { API_URL, getAuthHeader } from '../../config';
 
+
 export default function InicioEmpresa() {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_URL } from "../../config";
+import { API_URL} from '../../config';
 import "./Registro.css";
 
 export default function RegistroEstudiante() {
@@ -24,7 +24,7 @@ export default function RegistroEstudiante() {
     }
 
     try {
-      const res = await fetch(`${API_URL}/auth/registro-estudiante`, {
+      const res = await fetch(`${API_URL}/api/auth/registro-estudiante`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, legajo, password }),
