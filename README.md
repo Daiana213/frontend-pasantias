@@ -1,12 +1,24 @@
-# React + Vite
+# Gestión de Pasantías Universitarias
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descripción
 
-Currently, two official plugins are available:
+Este proyecto busca digitalizar y optimizar el proceso de gestión de pasantías universitarias, eliminando ineficiencias y mejorando la comunicación entre estudiantes, empresas y la universidad.
+## Características Principales
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Registro y autenticación de estudiantes y empresas.
+- Publicación de ofertas de pasantías por parte de empresas.
+- Gestión documental y comunicación centralizada.
+- Generación de informes y estadísticas para toma de decisiones.
+- Asignación automática de pasantes según criterios definidos.
 
-## Expanding the ESLint configuration
+## Tecnologías Utilizadas
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend:** React + Vite.
+- **Backend:** Node y db.json (autenticación y base de datos).
+- **Implementación y Despliegue:** GitHub Pages.  https://daiana213.github.io/frontend-pasantias/
+
+## Iteraciones 
+- **Drive:** Contiene analisis, diseño y testing del proyecto. https://docs.google.com/document/d/1mfjj2wQ3ibJ2PUQFbZQSKmi4OrdLt5Vo/edit?usp=sharing&ouid=109915852570060500268&rtpof=true&sd=true
+
+
+
