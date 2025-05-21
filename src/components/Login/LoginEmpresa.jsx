@@ -15,7 +15,7 @@ export default function LoginEmpresa() {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/auth/login-empresa`, {
+      const res = await fetch(`${API_URL}/api/auth/login-empresa`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ correo, contraseña }),

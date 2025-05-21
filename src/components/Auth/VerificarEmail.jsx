@@ -3,15 +3,15 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { API_URL } from '../../config';
 
 export default function VerificarEmail() {
-  const [status, setStatus] = useState('verificando');
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
   const token = searchParams.get('token');
+  const [status, setStatus] = useState('verificando');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const verificarToken = async () => {
       try {
-        const response = await fetch(`${API_URL}/auth/verificar-email`, {
+        const response = await fetch(`${API_URL}/api/auth/verificar-email`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -22,12 +22,13 @@ export default function VerificarEmail() {
         if (response.ok) {
           setStatus('verificado');
           setTimeout(() => {
-            navigate('/login-estudiante');
+            navigate('/login');
           }, 3000);
         } else {
           setStatus('error');
         }
       } catch (error) {
+        console.error('Error:', error);
         setStatus('error');
       }
     };
@@ -41,18 +42,17 @@ export default function VerificarEmail() {
 
   return (
     <div className="verificar-email-container">
-      <h2>Verificación de Email</h2>
-      {status === 'verificando' && <p>Verificando tu dirección de email...</p>}
+      {status === 'verificando' && <p>Verificando tu email...</p>}
       {status === 'verificado' && (
         <div>
-          <p>¡Email verificado exitosamente!</p>
-          <p>Serás redirigido al inicio de sesión en unos segundos...</p>
+          <h2>¡Email verificado!</h2>
+          <p>Tu cuenta ha sido verificada exitosamente. Serás redirigido al login...</p>
         </div>
       )}
       {status === 'error' && (
         <div>
-          <p>Hubo un error al verificar tu email.</p>
-          <p>Por favor, intenta nuevamente o contacta con soporte.</p>
+          <h2>Error de verificación</h2>
+          <p>No se pudo verificar tu email. Por favor, intenta nuevamente o contacta al administrador.</p>
         </div>
       )}
     </div>
