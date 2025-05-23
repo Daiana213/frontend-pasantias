@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from '../../config';
 import './Registro.css';
+import Header from '../Header/Header';
 
 export default function RegistroEmpresa() {
   const [nombre, setNombre] = useState("");
@@ -24,7 +25,7 @@ export default function RegistroEmpresa() {
     }
 
     try {
-      const res = await fetch(`${API_URL}/auth/registro-empresa`, {
+      const res = await fetch(`${API_URL}/api/auth/registro-empresa`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
@@ -53,23 +54,26 @@ export default function RegistroEmpresa() {
   };
 
   return (
-    <div className="registro-container">
-      <h2>Registro de Empresa</h2>
-      <form className="registro-form" onSubmit={handleSubmit}>
-        <input type="text" placeholder="Nombre" value={nombre} onChange={e => setNombre(e.target.value)} required />
-        <input type="email" placeholder="Correo electrónico" value={correo} onChange={e => setCorreo(e.target.value)} required />
-        <input type="text" placeholder="Persona de contacto" value={personaContacto} onChange={e => setPersonaContacto(e.target.value)} required />
-        <input type="tel" placeholder="Teléfono" value={telefono} onChange={e => setTelefono(e.target.value)} required />
-        <input type="text" placeholder="Dirección" value={direccion} onChange={e => setDireccion(e.target.value)} required />
-        <input type="password" placeholder="Contraseña" value={contraseña} onChange={e => setContraseña(e.target.value)} required />
-        <input type="password" placeholder="Verificar contraseña" value={verificarContraseña} onChange={e => setVerificarContraseña(e.target.value)} required />
-        <button type="submit">Registrarse</button>
-      </form>
-      {error && <div style={{color: "red", marginTop: 8}}>{error}</div>}
-      <div className="registro-link">
-        <span>¿Ya tienes cuenta?</span>
-        <button onClick={() => navigate("/login-empresa")}>Iniciar Sesión</button>
+    <>
+      <Header />
+      <div className="registro-container">
+        <h2>Registro de Empresa</h2>
+        <form className="registro-form" onSubmit={handleSubmit}>
+          <input type="text" placeholder="Nombre" value={nombre} onChange={e => setNombre(e.target.value)} required />
+          <input type="email" placeholder="Correo electrónico" value={correo} onChange={e => setCorreo(e.target.value)} required />
+          <input type="text" placeholder="Persona de contacto" value={personaContacto} onChange={e => setPersonaContacto(e.target.value)} required />
+          <input type="tel" placeholder="Teléfono" value={telefono} onChange={e => setTelefono(e.target.value)} required />
+          <input type="text" placeholder="Dirección" value={direccion} onChange={e => setDireccion(e.target.value)} required />
+          <input type="password" placeholder="Contraseña" value={contraseña} onChange={e => setContraseña(e.target.value)} required />
+          <input type="password" placeholder="Verificar contraseña" value={verificarContraseña} onChange={e => setVerificarContraseña(e.target.value)} required />
+          <button type="submit">Registrarse</button>
+        </form>
+        {error && <div style={{color: "red", marginTop: 8}}>{error}</div>}
+        <div className="registro-link">
+          <span>¿Ya tienes cuenta?</span>
+          <button onClick={() => navigate("/login-empresa")}>Iniciar Sesión</button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

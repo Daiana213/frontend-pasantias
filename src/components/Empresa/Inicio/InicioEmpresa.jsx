@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
+import Header from '../../Header/HeaderEmpresa';
 import './InicioEmpresa.css';
 import { useNavigate } from 'react-router-dom';
-import { API_URL, getAuthHeader } from '../../config';
+import { API_URL, getAuthHeader } from '../../../config';
 
 
 export default function InicioEmpresa() {
@@ -41,6 +42,8 @@ export default function InicioEmpresa() {
   };
 
   return (
+    <>
+    <Header />
     <div className="inicio-empresa-container">
       <h2 className="inicio-titulo"> Hola, {usuario?.nombre || "Nombre Empresa"}</h2>
       <div className="inicio-secciones">
@@ -70,13 +73,7 @@ export default function InicioEmpresa() {
           </div>
         </section>
       </div>
-      <button
-        onClick={handleCerrarSesion}
-        style={{marginTop: 20}}
-        className="btn-cerrar-sesion"
-      >
-        Cerrar sesión
-      </button>
     </div>
+    </>
   );
 } 

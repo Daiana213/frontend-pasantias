@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL} from '../../config';
 import "./Registro.css";
+import Header from '../Header/Header';
 
 export default function RegistroEstudiante() {
   const [email, setEmail] = useState("");
@@ -46,73 +47,76 @@ export default function RegistroEstudiante() {
   };
 
   return (
-    <div className="registro-container">
-      <h2>Registro</h2>
-      <p>Registrate como estudiante</p>
-      <form className="registro-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">Correo electrónico:</label>
-          <input 
-            id="email"
-            type="email" 
-            placeholder="Ingresa tu correo electrónico" 
-            value={email} 
-            onChange={e => setEmail(e.target.value)} 
-            required 
+    <>
+      <Header />
+      <div className="registro-container">
+        <h2>Registro</h2>
+        <p>Registrate como estudiante</p>
+        <form className="registro-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Correo electrónico:</label>
+            <input 
+              id="email"
+              type="email" 
+              placeholder="Ingresa tu correo electrónico" 
+              value={email} 
+              onChange={e => setEmail(e.target.value)} 
+              required 
+              disabled={loading}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="legajo">Legajo:</label>
+            <input 
+              id="legajo"
+              type="text" 
+              placeholder="Ingresa tu legajo" 
+              value={legajo} 
+              onChange={e => setLegajo(e.target.value)} 
+              required 
+              disabled={loading}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Contraseña:</label>
+            <input 
+              id="password"
+              type="password" 
+              placeholder="Ingresa tu contraseña" 
+              value={password} 
+              onChange={e => setPassword(e.target.value)} 
+              required 
+              disabled={loading}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="verificarContraseña">Verificar contraseña:</label>
+            <input 
+              id="verificarContraseña"
+              type="password" 
+              placeholder="Verifica tu contraseña" 
+              value={verificarContraseña} 
+              onChange={e => setVerificarContraseña(e.target.value)} 
+              required 
+              disabled={loading}
+            />
+          </div>
+          {error && <div className="error-message">{error}</div>}
+          <button type="submit" disabled={loading} className={loading ? 'loading' : ''}>
+            {loading ? 'Registrando...' : 'Registrarse'}
+          </button>
+        </form>
+        <div className="registro-link">
+          <span>¿Ya tienes cuenta?</span>
+          <button 
+            onClick={() => navigate("/login-estudiante")}
+            className="link-button"
             disabled={loading}
-          />
+          >
+            Iniciar Sesión
+          </button>
         </div>
-        <div className="form-group">
-          <label htmlFor="legajo">Legajo:</label>
-          <input 
-            id="legajo"
-            type="text" 
-            placeholder="Ingresa tu legajo" 
-            value={legajo} 
-            onChange={e => setLegajo(e.target.value)} 
-            required 
-            disabled={loading}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Contraseña:</label>
-          <input 
-            id="password"
-            type="password" 
-            placeholder="Ingresa tu contraseña" 
-            value={password} 
-            onChange={e => setPassword(e.target.value)} 
-            required 
-            disabled={loading}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="verificarContraseña">Verificar contraseña:</label>
-          <input 
-            id="verificarContraseña"
-            type="password" 
-            placeholder="Verifica tu contraseña" 
-            value={verificarContraseña} 
-            onChange={e => setVerificarContraseña(e.target.value)} 
-            required 
-            disabled={loading}
-          />
-        </div>
-        {error && <div className="error-message">{error}</div>}
-        <button type="submit" disabled={loading} className={loading ? 'loading' : ''}>
-          {loading ? 'Registrando...' : 'Registrarse'}
-        </button>
-      </form>
-      <div className="registro-link">
-        <span>¿Ya tienes cuenta?</span>
-        <button 
-          onClick={() => navigate("/login-estudiante")}
-          className="link-button"
-          disabled={loading}
-        >
-          Iniciar Sesión
-        </button>
       </div>
-    </div>
+    </>
   );
 }
