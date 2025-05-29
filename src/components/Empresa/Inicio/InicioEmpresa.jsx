@@ -10,25 +10,33 @@ export default function InicioEmpresa() {
   const navigate = useNavigate();
   const [postulaciones, setPostulaciones] = useState([]);
   const [notificaciones, setNotificaciones] = useState([]);
+  const [error, setError] = useState(''); 
 
   useEffect(() => {
     const cargarDatos = async () => {
       try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('No hay token de autenticación');
+        }
+
         // Cargar postulaciones
-        const resPostulaciones = await fetch(`${API_URL}/postulaciones/empresa`, {
-          headers: getAuthHeader()
+        const resPostulaciones = await fetch(`${API_URL}/api/postulaciones/empresa`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
         });
+
+        if (!resPostulaciones.ok) {
+          throw new Error('Error al cargar las postulaciones');
+        }
+
         const dataPostulaciones = await resPostulaciones.json();
         setPostulaciones(dataPostulaciones);
-
-        // Cargar notificaciones
-        const resNotificaciones = await fetch(`${API_URL}/notificaciones`, {
-          headers: getAuthHeader()
-        });
-        const dataNotificaciones = await resNotificaciones.json();
-        setNotificaciones(dataNotificaciones);
       } catch (error) {
         console.error('Error al cargar datos:', error);
+        setError(error.message);
       }
     };
 
@@ -45,7 +53,7 @@ export default function InicioEmpresa() {
     <>
     <Header />
     <div className="inicio-empresa-container">
-      <h2 className="inicio-titulo"> Hola, {usuario?.nombre || "Nombre Empresa"}</h2>
+      <h2 className="inicio-titulo"> Hola, {usuario?.nombre || "Empresa"}</h2>
       <div className="inicio-secciones">
         <section className="inicio-bloque">
           <h3>Opciones rápidas</h3>
@@ -76,4 +84,4 @@ export default function InicioEmpresa() {
     </div>
     </>
   );
-} 
+}

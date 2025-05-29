@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from '../../config';
 import './Login.css';
 import Header from '../Header/Header';
+import { useAuth } from '../../contexts/AuthContext'; // Añadir esta importación
 
 export default function LoginEmpresa() {
   const [correo, setCorreo] = useState("");
@@ -10,6 +11,7 @@ export default function LoginEmpresa() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { setCurrentUser } = useAuth(); // Añadir esta línea
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,21 +25,23 @@ export default function LoginEmpresa() {
       });
       const data = await res.json();
       if (data.ok) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("usuario", JSON.stringify({
-          tipo: "empresa",
+        const userData = {
+          rol: "empresa", // Asegúrate de incluir el rol
           ...data
-        }));
+        };
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("usuario", JSON.stringify(userData));
+        setCurrentUser(userData); // Actualizar el contexto de autenticación
         navigate("/inicio-empresa");
       } else {
-        setError(data.error || "Error al iniciar sesión");
+        setError(data.error || data.message || "Error al iniciar sesión");
       }
     } catch (error) {
       setError("Error al conectar con el servidor");
     } finally {
       setLoading(false);
     }
-};
+  };
 
   return (
     <>

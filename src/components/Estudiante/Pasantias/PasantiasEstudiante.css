@@ -1,7 +1,7 @@
 .pasantias-container {
+  padding: 2rem;
   max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+  margin: 0 auto;
 }
 
 .pasantias-grid {
@@ -12,11 +12,64 @@
 }
 
 .pasantia-card {
-  background-color: var(--color-fondo);
+  background: white;
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pasantia-card h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.25rem;
+}
+
+.pasantia-card .empresa {
+  color: #666;
+  font-weight: 500;
+  margin: 0;
+}
+
+.pasantia-card .descripcion {
+  color: #444;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.pasantia-card .detalles {
+  display: flex;
+  justify-content: space-between;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.postular-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.postular-btn:hover:not(:disabled) {
+  background-color: var(--primary-color-dark);
+}
+
+.postular-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #dc3545;
+  text-align: center;
+  margin-top: 1rem;
 }
 
 .pasantia-card:hover {

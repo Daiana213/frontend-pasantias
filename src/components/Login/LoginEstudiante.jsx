@@ -36,15 +36,15 @@ export default function LoginEstudiante() {
       }
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem("usuario", JSON.stringify({
-        tipo: "estudiante",
-        ...data
-      }));
-
       setCurrentUser({
-        tipo: "estudiante",
+        rol: "estudiante", // Cambiar tipo por rol
         ...data
       });
+
+      localStorage.setItem("usuario", JSON.stringify({
+        rol: "estudiante", // Cambiar tipo por rol
+        ...data
+      }));
     } catch (error) {
       setError(error.message || "Error al iniciar sesión");
     } finally {
