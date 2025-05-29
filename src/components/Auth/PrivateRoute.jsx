@@ -12,8 +12,8 @@ const PrivateRoute = ({ children, requiredRole }) => {
     return <Navigate to={`/login-${requiredRole}`} replace />;  
   }
 
-  if (currentUser.rol !== requiredRole) {
-    const redirectPath = currentUser.rol === 'estudiante' ? '/inicio-estudiante' : '/inicio-empresa';
+  if (currentUser.role !== requiredRole) { // Cambiar rol a role
+    const redirectPath = currentUser.role === 'estudiante' ? '/inicio-estudiante' : '/inicio-empresa'; // Cambiar rol a role
     return <Navigate to={redirectPath} replace />;
   }
 

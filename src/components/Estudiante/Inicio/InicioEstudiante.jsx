@@ -1,108 +1,128 @@
 import { useState, useEffect } from 'react';
 import './InicioEstudiante.css';
-import { useNavigate } from 'react-router-dom';
 import { API_URL, getAuthHeader } from '../../../config';
 import { useAuth } from '../../../contexts/AuthContext';
 import HeaderEstudiante from '../../Header/HeaderEstudiante';
 
 export default function InicioEstudiante() {
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
-  const navigate = useNavigate();
-  const [ofertas, setOfertas] = useState([]);
-  const [notificaciones, setNotificaciones] = useState([]);
-  const {currentUser, setCurrentUser} = useAuth();
+  const { currentUser } = useAuth();
+  const [pasantias, setPasantias] = useState([]);
+  const [postulaciones, setPostulaciones] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const cargarDatos = async () => {
       try {
-        const resOfertas = await fetch(`${API_URL}/ofertas`, {
+        setLoading(true);
+        // Cargar pasantías disponibles
+        const resPasantias = await fetch(`${API_URL}/api/pasantias`, {
           headers: getAuthHeader()
         });
-        const dataOfertas = await resOfertas.json();
-        setOfertas(dataOfertas);
+        const dataPasantias = await resPasantias.json();
+        setPasantias(dataPasantias);
 
-        const resNotificaciones = await fetch(`${API_URL}/notificaciones`, {
+        // Cargar postulaciones del estudiante
+        const resPostulaciones = await fetch(`${API_URL}/api/postulaciones/estudiante`, {
           headers: getAuthHeader()
         });
-        const dataNotificaciones = await resNotificaciones.json();
-        setNotificaciones(dataNotificaciones);
+        if (resPostulaciones.ok) {
+          const dataPostulaciones = await resPostulaciones.json();
+          setPostulaciones(dataPostulaciones);
+        }
       } catch (error) {
         console.error('Error al cargar datos:', error);
+        setError('Error al cargar los datos. Por favor, intenta nuevamente.');
+      } finally {
+        setLoading(false);
       }
     };
 
     cargarDatos();
   }, []);
 
-  const handleCerrarSesion = () => {
-    localStorage.removeItem("usuario");
-    localStorage.removeItem("token");
-    setCurrentUser(false);
-  };
-
-  if (!currentUser) {
-    return navigate("/");
-  }
+  if (loading) return <div className="loading-container">Cargando...</div>;
 
   return (
     <>
       <HeaderEstudiante />
       <div className="inicio-estudiante-container">
         <div className="inicio-header">
-          <h2 className="inicio-titulo">¡Bienvenido, {usuario?.email || "Estudiante"}!</h2>
-          <div className="inicio-info">
-            <span>Legajo: <b>{usuario?.legajo}</b></span>
-            <span className={`estado-validacion ${usuario?.estadoValidacion || 'pendiente'}`}>
-              Estado: <b>{usuario?.estadoValidacion || "pendiente"}</b>
-            </span>
-            <span>Registro: <b>{usuario?.fechaRegistro ? new Date(usuario.fechaRegistro).toLocaleDateString() : "-"}</b></span>
+          <h1 className="inicio-titulo">Bienvenido, {currentUser?.nombre || currentUser?.email}</h1>
+          <p className="inicio-subtitulo">Sistema de Pasantías UTN</p>
+        </div>
+
+        <div className="dashboard-cards">
+          <div className="dashboard-card">
+            <div className="card-icon pasantias-icon">📋</div>
+            <div className="card-content">
+              <h2>{pasantias.length}</h2>
+              <p>Pasantías disponibles</p>
+            </div>
+          </div>
+          
+          <div className="dashboard-card">
+            <div className="card-icon postulaciones-icon">📝</div>
+            <div className="card-content">
+              <h2>{postulaciones.length}</h2>
+              <p>Mis postulaciones</p>
+            </div>
           </div>
         </div>
-  
-        <div className="inicio-estadisticas">
-          <div className="estadistica-card ofertas">
-            <div className="estadistica-numero">{ofertas.length}</div>
-            <div className="estadistica-texto">Ofertas disponibles</div>
-          </div>
-          <div className="estadistica-card notificaciones">
-            <div className="estadistica-numero">{notificaciones.length}</div>
-            <div className="estadistica-texto">Notificaciones</div>
-          </div>
-        </div>
-  
+
+        {error && <div className="error-message">{error}</div>}
+
         <div className="inicio-secciones">
-          <section className="inicio-bloque">
-            <h3>Notificaciones</h3>
-            <div className="inicio-cajas">
-              {notificaciones.length > 0 ? (
-                notificaciones.map(notif => (
-                  <div key={notif.id} className="inicio-caja notificacion">
-                    <p>{notif.mensaje}</p>
-                    <span className="fecha">{notif.fecha}</span>
+          <section className="inicio-seccion">
+            <h2>Pasantías destacadas</h2>
+            <div className="pasantias-recientes">
+              {pasantias.length > 0 ? (
+                pasantias.slice(0, 3).map(pasantia => (
+                  <div key={pasantia.id} className="pasantia-card-mini">
+                    <h3>{pasantia.titulo}</h3>
+                    <p className="empresa-nombre">{pasantia.empresaNombre}</p>
+                    <p className="pasantia-descripcion">{pasantia.descripcion?.substring(0, 100)}...</p>
+                    <div className="pasantia-footer">
+                      <span className="pasantia-modalidad">{pasantia.modalidad}</span>
+                      <span className="pasantia-fecha">Hasta: {new Date(pasantia.fechaLimitePostulacion).toLocaleDateString()}</span>
+                    </div>
                   </div>
                 ))
               ) : (
-                <div className="inicio-caja vacio">Sin notificaciones</div>
+                <p className="no-data">No hay pasantías disponibles actualmente.</p>
               )}
             </div>
+            <a href="/pasantias" className="ver-mas-link">Ver todas las pasantías</a>
           </section>
-  
-          <section className="inicio-bloque">
-            <h3>Nuevas ofertas</h3>
-            <div className="inicio-cajas">
-              {ofertas.length > 0 ? (
-                ofertas.map(oferta => (
-                  <div key={oferta.id} className="inicio-caja oferta">
-                    <h4>{oferta.titulo}</h4>
-                    <p>{oferta.descripcion}</p>
-                    <span className="fecha">{oferta.fecha}</span>
+
+          <section className="inicio-seccion">
+            <h2>Mis postulaciones recientes</h2>
+            <div className="postulaciones-recientes">
+              {postulaciones.length > 0 ? (
+                postulaciones.slice(0, 3).map(postulacion => (
+                  <div key={postulacion.id} className="postulacion-card-mini">
+                    <h3>{postulacion.pasantiaTitulo}</h3>
+                    <div className="postulacion-estado">
+                      <span className={`estado-badge ${postulacion.estado}`}>{postulacion.estado}</span>
+                      <span className="postulacion-fecha">{new Date(postulacion.fecha).toLocaleDateString()}</span>
+                    </div>
                   </div>
                 ))
               ) : (
-                <div className="inicio-caja vacio">No hay nuevas ofertas</div>
+                <p className="no-data">No tienes postulaciones activas.</p>
               )}
             </div>
+            <a href="/mis-postulaciones" className="ver-mas-link">Ver todas mis postulaciones</a>
           </section>
+        </div>
+
+        <div className="acciones-rapidas">
+          <h2>Acciones rápidas</h2>
+          <div className="acciones-botones">
+            <a href="/pasantias" className="accion-btn">Buscar pasantías</a>
+            <a href="/perfil-estudiante" className="accion-btn">Actualizar perfil</a>
+            <a href="/comunicacion" className="accion-btn">Mensajes</a>
+          </div>
         </div>
       </div>
     </>

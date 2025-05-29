@@ -42,7 +42,7 @@ export default function LoginEstudiante() {
       });
 
       localStorage.setItem("usuario", JSON.stringify({
-        rol: "estudiante", // Cambiar tipo por rol
+        role: "estudiante", // Cambiar tipo por rol
         ...data
       }));
     } catch (error) {

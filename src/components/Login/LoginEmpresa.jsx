@@ -26,7 +26,7 @@ export default function LoginEmpresa() {
       const data = await res.json();
       if (data.ok) {
         const userData = {
-          rol: "empresa", // Asegúrate de incluir el rol
+          role: "empresa", // Cambiar rol a role para mantener consistencia
           ...data
         };
         localStorage.setItem("token", data.token);
