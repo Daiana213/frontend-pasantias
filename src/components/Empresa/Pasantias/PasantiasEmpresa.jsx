@@ -35,8 +35,8 @@ export default function PasantiasEmpresa() {
         throw new Error('No hay token de autenticación');
       }
 
-      const response = await fetch(`${API_URL}/api/pasantias`, {
-        headers: getAuthHeader(token)
+      const response = await fetch(`${API_URL}/api/pasantias/empresa`, {
+        headers: getAuthHeader().headers
       });
       if (!response.ok) {
         throw new Error('Error al cargar las pasantías');
@@ -57,10 +57,7 @@ export default function PasantiasEmpresa() {
     try {
       const response = await fetch(`${API_URL}/api/pasantias`, {
         method: 'POST',
-        headers: {
-          ...getAuthHeader(),
-          'Content-Type': 'application/json'
-        },
+        headers: getAuthHeader().headers,
         body: JSON.stringify(formData)
       });
 
