@@ -1,269 +1,342 @@
+/* Estilos para Inicio Empresa - Sistema de Pasantías UTN */
 .inicio-empresa-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
-  background: #f9f9f9;
+  padding: var(--espaciado-2xl) var(--espaciado-xl);
+  background: linear-gradient(135deg, var(--color-secundario), #f8fbff 80%);
   min-height: calc(100vh - 80px);
+  font-family: var(--fuente-principal);
 }
 
 .inicio-header {
-  margin-bottom: 2rem;
+  margin-bottom: var(--espaciado-2xl);
   text-align: center;
+  position: relative;
+}
+
+.inicio-header::after {
+  content: '';
+  position: absolute;
+  bottom: -var(--espaciado-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primario), var(--color-primario-claro));
+  border-radius: var(--radio-sm);
 }
 
 .inicio-titulo {
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
-  font-size: 2rem;
+  color: var(--color-primario);
+  margin-bottom: var(--espaciado-sm);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .inicio-subtitulo {
-  color: #7f8c8d;
-  font-size: 1.1rem;
-  margin-top: 0;
+  color: var(--color-texto-secundario);
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin: 0;
 }
 
 .dashboard-cards {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--espaciado-xl);
+  margin-bottom: var(--espaciado-3xl);
 }
 
 .dashboard-card {
-  flex: 1;
-  min-width: 250px;
-  background: white;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  background: var(--color-fondo);
+  border-radius: var(--radio-xl);
+  padding: var(--espaciado-xl);
+  box-shadow: var(--sombra-media);
   display: flex;
   align-items: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all var(--transicion-normal);
+  border: 1px solid var(--color-borde);
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primario), var(--color-primario-claro));
 }
 
 .dashboard-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
+  box-shadow: var(--sombra-fuerte);
 }
 
 .card-icon {
   font-size: 2.5rem;
-  margin-right: 1.5rem;
+  margin-right: var(--espaciado-lg);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
+  transition: all var(--transicion-normal);
+}
+
+.dashboard-card:hover .card-icon {
+  transform: scale(1.1);
 }
 
 .pasantias-icon {
-  background-color: #e3f2fd;
-  color: #2196f3;
+  background: linear-gradient(135deg, var(--color-primario), var(--color-primario-claro));
+  color: var(--color-texto-inverso);
 }
 
 .postulaciones-icon {
-  background-color: #e8f5e9;
-  color: #4caf50;
+  background: linear-gradient(135deg, var(--color-exito), var(--color-exito-claro));
+  color: var(--color-texto-inverso);
 }
 
 .card-content h2 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin: 0;
-  color: #2c3e50;
+  color: var(--color-primario);
+  font-weight: 700;
+  line-height: 1;
 }
 
 .card-content p {
-  margin: 0;
-  color: #7f8c8d;
-  font-size: 1rem;
+  margin: var(--espaciado-xs) 0 0 0;
+  color: var(--color-texto-secundario);
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 .inicio-secciones {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--espaciado-2xl);
+  margin-bottom: var(--espaciado-3xl);
 }
 
 .inicio-seccion {
-  background: white;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  background: var(--color-fondo);
+  border-radius: var(--radio-xl);
+  padding: var(--espaciado-xl);
+  box-shadow: var(--sombra-media);
+  border: 1px solid var(--color-borde);
+  position: relative;
+  overflow: hidden;
+}
+
+.inicio-seccion::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primario), var(--color-primario-claro));
 }
 
 .inicio-seccion h2 {
-  color: #2c3e50;
-  margin-top: 0;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  border-bottom: 2px solid #ecf0f1;
-  padding-bottom: 0.75rem;
+  color: var(--color-primario);
+  margin: 0 0 var(--espaciado-xl) 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-secundario);
+  padding-bottom: var(--espaciado-md);
+  position: relative;
+}
+
+.inicio-seccion h2::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--color-primario);
 }
 
 .pasantias-recientes, .postulaciones-recientes {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--espaciado-md);
 }
 
 .pasantia-card-mini, .postulacion-card-mini {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 1rem;
-  transition: transform 0.2s ease;
+  background: var(--color-fondo-terciario);
+  border-radius: var(--radio-lg);
+  padding: var(--espaciado-lg);
+  transition: all var(--transicion-normal);
+  border: 1px solid var(--color-borde);
+  position: relative;
+  overflow: hidden;
+}
+
+.pasantia-card-mini::before, .postulacion-card-mini::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--color-primario);
+  transform: scaleY(0);
+  transition: transform var(--transicion-normal);
+}
+
+.pasantia-card-mini:hover::before, .postulacion-card-mini:hover::before {
+  transform: scaleY(1);
 }
 
 .pasantia-card-mini:hover, .postulacion-card-mini:hover {
-  transform: translateX(5px);
+  transform: translateX(8px);
+  box-shadow: var(--sombra-media);
+  background: var(--color-fondo);
 }
 
 .pasantia-card-mini h3, .postulacion-card-mini h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.1rem;
-  color: #2c3e50;
+  margin: 0 0 var(--espaciado-sm) 0;
+  font-size: 1.2rem;
+  color: var(--color-primario);
+  font-weight: 600;
 }
 
 .pasantia-info {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
+  align-items: center;
+  margin-bottom: var(--espaciado-md);
 }
 
 .pasantia-postulaciones {
-  color: #7f8c8d;
+  color: var(--color-texto-secundario);
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .estudiante-nombre {
-  color: #7f8c8d;
-  font-size: 0.9rem;
-  margin: 0 0 0.5rem 0;
+  color: var(--color-texto-secundario);
+  font-size: 0.95rem;
+  margin: 0 0 var(--espaciado-sm) 0;
+  font-weight: 500;
 }
 
 .pasantia-descripcion {
-  color: #34495e;
+  color: var(--color-texto);
   font-size: 0.9rem;
-  margin: 0 0 0.75rem 0;
-  line-height: 1.4;
+  margin: 0 0 var(--espaciado-md) 0;
+  line-height: 1.5;
 }
 
 .pasantia-footer {
   display: flex;
   justify-content: flex-end;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 }
 
 .pasantia-fecha {
-  color: #7f8c8d;
+  color: var(--color-texto-secundario);
+  font-weight: 500;
 }
 
 .postulacion-estado {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: var(--espaciado-sm);
 }
 
 .estado-badge {
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
+  padding: var(--espaciado-xs) var(--espaciado-sm);
+  border-radius: var(--radio-sm);
   font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .estado-badge.pendiente, .estado-badge.pendiente_sau {
-  background: #fff3e0;
-  color: #ff9800;
+  background: var(--color-advertencia);
+  color: var(--color-texto-inverso);
 }
 
 .estado-badge.aceptada, .estado-badge.oferta {
-  background: #e8f5e9;
-  color: #4caf50;
+  background: var(--color-exito);
+  color: var(--color-texto-inverso);
 }
 
 .estado-badge.rechazada {
-  background: #ffebee;
-  color: #f44336;
+  background: var(--color-error);
+  color: var(--color-texto-inverso);
 }
 
 .estado-badge.en_proceso {
-  background: #e3f2fd;
-  color: #2196f3;
+  background: var(--color-primario);
+  color: var(--color-texto-inverso);
 }
 
 .postulacion-fecha {
-  color: #7f8c8d;
-  font-size: 0.8rem;
+  color: var(--color-texto-secundario);
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 .ver-mas-link {
-  display: block;
-  text-align: right;
-  color: #3498db;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-primario);
   text-decoration: none;
-  margin-top: 1rem;
-  font-size: 0.9rem;
+  margin-top: var(--espaciado-lg);
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all var(--transicion-normal);
+  padding: var(--espaciado-sm) var(--espaciado-md);
+  border-radius: var(--radio-md);
+  background: var(--color-secundario);
 }
 
 .ver-mas-link:hover {
-  text-decoration: underline;
+  background: var(--color-primario);
+  color: var(--color-texto-inverso);
+  transform: translateX(4px);
 }
 
-.acciones-rapidas {
-  background: white;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+.ver-mas-link::after {
+  content: '→';
+  margin-left: var(--espaciado-xs);
+  transition: transform var(--transicion-normal);
 }
 
-.acciones-rapidas h2 {
-  color: #2c3e50;
-  margin-top: 0;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  border-bottom: 2px solid #ecf0f1;
-  padding-bottom: 0.75rem;
-}
-
-.acciones-botones {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.accion-btn {
-  background: #3498db;
-  color: white;
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  font-weight: 500;
-  transition: background 0.2s ease;
-  text-align: center;
-  flex: 1;
-  min-width: 150px;
-}
-
-.accion-btn:hover {
-  background: #2980b9;
+.ver-mas-link:hover::after {
+  transform: translateX(4px);
 }
 
 .no-data {
-  color: #7f8c8d;
+  color: var(--color-texto-secundario);
   text-align: center;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
+  padding: var(--espaciado-xl);
+  background: var(--color-fondo-terciario);
+  border-radius: var(--radio-lg);
+  border: 2px dashed var(--color-borde);
+  font-style: italic;
 }
 
 .error-message {
-  background: #ffebee;
-  color: #c62828;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--color-error);
+  padding: var(--espaciado-lg);
+  border-radius: var(--radio-lg);
+  margin-bottom: var(--espaciado-xl);
   text-align: center;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  font-weight: 500;
 }
 
 .loading-container {
@@ -272,23 +345,132 @@
   align-items: center;
   height: 100vh;
   font-size: 1.2rem;
-  color: #3498db;
+  color: var(--color-primario);
+  font-weight: 500;
 }
 
-@media (max-width: 768px) {
-  .inicio-secciones {
-    grid-template-columns: 1fr;
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .inicio-empresa-container {
+    padding: var(--espaciado-xl) var(--espaciado-lg);
   }
   
   .dashboard-cards {
-    flex-direction: column;
+    gap: var(--espaciado-lg);
+  }
+  
+  .inicio-secciones {
+    gap: var(--espaciado-xl);
+  }
+}
+
+@media (max-width: 768px) {
+  .inicio-empresa-container {
+    padding: var(--espaciado-lg) var(--espaciado-md);
+  }
+  
+  .inicio-titulo {
+    font-size: 2rem;
+  }
+  
+  .inicio-subtitulo {
+    font-size: 1.1rem;
+  }
+  
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+    gap: var(--espaciado-md);
   }
   
   .dashboard-card {
-    width: 100%;
+    padding: var(--espaciado-lg);
   }
   
-  .acciones-botones {
-    flex-direction: column;
+  .card-content h2 {
+    font-size: 2.5rem;
   }
+  
+  .inicio-secciones {
+    grid-template-columns: 1fr;
+    gap: var(--espaciado-lg);
+  }
+  
+  .inicio-seccion {
+    padding: var(--espaciado-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .inicio-empresa-container {
+    padding: var(--espaciado-md);
+  }
+  
+  .inicio-titulo {
+    font-size: 1.75rem;
+  }
+  
+  .inicio-subtitulo {
+    font-size: 1rem;
+  }
+  
+  .dashboard-card {
+    padding: var(--espaciado-md);
+  }
+  
+  .card-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+    margin-right: var(--espaciado-md);
+  }
+  
+  .card-content h2 {
+    font-size: 2rem;
+  }
+  
+  .inicio-seccion {
+    padding: var(--espaciado-md);
+  }
+  
+  .inicio-seccion h2 {
+    font-size: 1.5rem;
+  }
+  
+  .pasantia-card-mini, .postulacion-card-mini {
+    padding: var(--espaciado-md);
+  }
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.inicio-empresa-container {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.dashboard-card {
+  animation: fadeInUp 0.6s ease-out;
+  animation-delay: 0.1s;
+  animation-fill-mode: both;
+}
+
+.inicio-seccion:nth-child(1) {
+  animation: fadeInUp 0.6s ease-out;
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
+}
+
+.inicio-seccion:nth-child(2) {
+  animation: fadeInUp 0.6s ease-out;
+  animation-delay: 0.3s;
+  animation-fill-mode: both;
 }

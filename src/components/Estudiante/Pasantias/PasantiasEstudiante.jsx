@@ -11,6 +11,8 @@ export default function PasantiasEstudiante() {
   const [error, setError] = useState('');
   const [postulando, setPostulando] = useState(null);
   const [notificacionActiva, setNotificacionActiva] = useState(false);
+  const [pasantiaSeleccionada, setPasantiaSeleccionada] = useState(null);
+  const [mostrarModal, setMostrarModal] = useState(false);
   const { currentUser } = useAuth();
   
   // Estados para filtros
@@ -53,10 +55,7 @@ export default function PasantiasEstudiante() {
     try {
       const response = await fetch(`${API_URL}/api/postulaciones`, {
         method: 'POST',
-        headers: {
-          ...getAuthHeader(),
-          'Content-Type': 'application/json'
-        },
+        headers: getAuthHeader(),
         body: JSON.stringify({ pasantiaId })
       });
 
@@ -73,6 +72,16 @@ export default function PasantiasEstudiante() {
     } finally {
       setPostulando(null);
     }
+  };
+
+  const abrirModalDetalle = (pasantia) => {
+    setPasantiaSeleccionada(pasantia);
+    setMostrarModal(true);
+  };
+
+  const cerrarModal = () => {
+    setMostrarModal(false);
+    setPasantiaSeleccionada(null);
   };
 
   const handleFiltroChange = (e) => {
@@ -113,13 +122,7 @@ export default function PasantiasEstudiante() {
     
     if (filtros.horarioPropuesto) {
       pasantiasFiltradas = pasantiasFiltradas.filter(p => 
-        p.horarioPropuesto?.toLowerCase() === filtros.horarioPropuesto.toLowerCase()
-      );
-    }
-    
-    if (filtros.fechaInicio) {
-      pasantiasFiltradas = pasantiasFiltradas.filter(p => 
-        p.fechaInicioEstimada?.includes(filtros.fechaInicio)
+        p.horarioPropuesto?.toLowerCase().includes(filtros.horarioPropuesto.toLowerCase())
       );
     }
     
@@ -145,48 +148,38 @@ export default function PasantiasEstudiante() {
   };
 
   const activarNotificaciones = () => {
-    // Aquí se implementaría la lógica para activar notificaciones
     setNotificacionActiva(true);
-    setError('');
+    // Aquí se implementaría la lógica para activar notificaciones
   };
 
-  if (loading) return <div>Cargando...</div>;
+  if (loading) return <div className="loading-container">Cargando...</div>;
 
   return (
     <>
       <HeaderEstudiante />
-      <div className="pasantias-container">
-        <h1>Pasantías Disponibles</h1>
-        
-        {/* Botón para mostrar/ocultar filtros */}
-        <button 
-          className="toggle-filtros-btn"
-          onClick={() => setMostrarFiltros(!mostrarFiltros)}
-        >
-          {mostrarFiltros ? 'Ocultar Filtros' : 'Mostrar Filtros'}
-        </button>
-        
-        {/* Panel de filtros */}
+      <div className="pasantias-estudiante-container">
+        <div className="pasantias-header">
+          <h1>Pasantías Disponibles</h1>
+          <button 
+            onClick={() => setMostrarFiltros(!mostrarFiltros)}
+            className="filtros-toggle-btn"
+          >
+            {mostrarFiltros ? 'Ocultar Filtros' : 'Mostrar Filtros'}
+          </button>
+        </div>
+
         {mostrarFiltros && (
-          <div className="filtros-panel">
-            <h3>Filtrar Pasantías</h3>
+          <div className="filtros-seccion">
             <div className="filtros-grid">
               <div className="filtro-grupo">
                 <label>Carrera:</label>
-                <select 
+                <input 
+                  type="text" 
                   name="carrera" 
                   value={filtros.carrera} 
-                  onChange={handleFiltroChange}
-                >
-                  <option value="">Todas</option>
-                  <option value="Ingeniería Electrónica">Ingeniería Electrónica</option>
-                  <option value="Ingeniería Electromecánica">Ingeniería Electromecánica</option>
-                  <option value="Ingeniería Química">Ingeniería Química</option>
-                  <option value="Ingeniería en Sistemas de Información">Ingeniería en Sistemas de Información</option>
-                  <option value="Ingeniería Industrial">Ingeniería Industrial</option>
-                  <option value="Licenciatura en Administración Rural">Licenciatura en Administración Rural</option>
-                  <option value="Tecnicatura Universitaria en Programación">Tecnicatura Universitaria en Programación</option>
-                </select>
+                  onChange={handleFiltroChange} 
+                  placeholder="Ingeniería..."
+                />
               </div>
               
               <div className="filtro-grupo">
@@ -198,8 +191,8 @@ export default function PasantiasEstudiante() {
                 >
                   <option value="">Todas</option>
                   <option value="presencial">Presencial</option>
-                  <option value="remota">Remota</option>
-                  <option value="hibrida">Híbrida</option>
+                  <option value="remoto">Remoto</option>
+                  <option value="hibrido">Híbrido</option>
                 </select>
               </div>
               
@@ -285,31 +278,152 @@ export default function PasantiasEstudiante() {
         <div className="pasantias-grid">
           {pasantiasFiltradas.map(pasantia => (
             <div key={pasantia.id} className="pasantia-card">
-              <h3>{pasantia.titulo}</h3>
-              <p className="empresa">{pasantia.empresaNombre}</p>
-              <p className="descripcion">{pasantia.descripcion}</p>
-              <div className="pasantia-details">
-                <p><strong>Carrera:</strong> {pasantia.carreraSugerida}</p>
-                <p><strong>Modalidad:</strong> {pasantia.modalidad}</p>
-                <p><strong>Duración:</strong> {pasantia.duracionEstimada}</p>
-                <p><strong>Horario:</strong> {pasantia.horarioPropuesto}</p>
-                <p><strong>Tipo de Jornada:</strong> {pasantia.tipoJornada}</p>
-                <p><strong>Fecha de Inicio:</strong> {new Date(pasantia.fechaInicioEstimada).toLocaleDateString()}</p>
-                <p><strong>Fecha Límite de Postulación:</strong> {new Date(pasantia.fechaLimitePostulacion).toLocaleDateString()}</p>
+              <div className="pasantia-header">
+                <h3>{pasantia.titulo}</h3>
+                <p className="empresa">{pasantia.empresaNombre}</p>
               </div>
-              <button
-                onClick={() => handlePostular(pasantia.id)}
-                disabled={postulando === pasantia.id || pasantia.postulaciones?.some(p => p.estudianteId === currentUser.id)}
-                className="postular-btn"
-              >
-                {postulando === pasantia.id ? 'Postulando...' :
-                 pasantia.postulaciones?.some(p => p.estudianteId === currentUser.id) ? 'Ya Postulado' :
-                 'Postularme'}
-              </button>
+              
+              <div className="pasantia-preview">
+                <p className="descripcion">
+                  {pasantia.descripcionTareas ? 
+                    (pasantia.descripcionTareas.length > 150 ? 
+                      `${pasantia.descripcionTareas.substring(0, 150)}...` : 
+                      pasantia.descripcionTareas
+                    ) : 
+                    'Sin descripción disponible'
+                  }
+                </p>
+                <div className="pasantia-details">
+                  <p><strong>Carrera:</strong> {pasantia.carreraSugerida}</p>
+                  <p><strong>Modalidad:</strong> {pasantia.modalidad}</p>
+                  <p><strong>Duración:</strong> {pasantia.duracionEstimada}</p>
+                  <p><strong>Fecha Límite:</strong> {new Date(pasantia.fechaLimitePostulacion).toLocaleDateString()}</p>
+                </div>
+              </div>
+              
+              <div className="pasantia-actions">
+                <button
+                  className="btn-ver-detalle"
+                  onClick={() => abrirModalDetalle(pasantia)}
+                >
+                  Ver detalle
+                </button>
+                <button
+                  onClick={() => handlePostular(pasantia.id)}
+                  disabled={postulando === pasantia.id || pasantia.postulaciones?.some(p => p.estudianteId === currentUser.id)}
+                  className="postular-btn"
+                >
+                  {postulando === pasantia.id ? 'Postulando...' :
+                   pasantia.postulaciones?.some(p => p.estudianteId === currentUser.id) ? 'Ya Postulado' :
+                   'Postularme'}
+                </button>
+              </div>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Modal de Detalle de Pasantía */}
+      {mostrarModal && pasantiaSeleccionada && (
+        <div className="modal-overlay" onClick={cerrarModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>{pasantiaSeleccionada.titulo}</h2>
+              <button className="modal-close" onClick={cerrarModal}>×</button>
+            </div>
+            
+            <div className="modal-body">
+              <div className="detalle-seccion">
+                <h3>Información General</h3>
+                <div className="detalle-grid">
+                  <div className="detalle-item">
+                    <span className="detalle-label">Empresa:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.empresaNombre}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Carrera sugerida:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.carreraSugerida}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Área/Sector:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.areaSector}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Modalidad:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.modalidad}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Duración:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.duracionEstimada}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Carga horaria:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.cargaHorariaSemanal}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Horario:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.horarioPropuesto}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Tipo de jornada:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.tipoJornada}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Fecha de inicio:</span>
+                    <span className="detalle-valor">
+                      {pasantiaSeleccionada.fechaInicioEstimada ? 
+                        new Date(pasantiaSeleccionada.fechaInicioEstimada).toLocaleDateString() : 
+                        'No especificada'
+                      }
+                    </span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Fecha límite:</span>
+                    <span className="detalle-valor">
+                      {new Date(pasantiaSeleccionada.fechaLimitePostulacion).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="detalle-seccion">
+                <h3>Descripción de Tareas</h3>
+                <p className="detalle-texto">{pasantiaSeleccionada.descripcionTareas || 'No disponible'}</p>
+              </div>
+
+              <div className="detalle-seccion">
+                <h3>Requisitos</h3>
+                <p className="detalle-texto">{pasantiaSeleccionada.requisitos || 'No disponible'}</p>
+              </div>
+
+              {pasantiaSeleccionada.observacionesAdicionales && (
+                <div className="detalle-seccion">
+                  <h3>Observaciones Adicionales</h3>
+                  <p className="detalle-texto">{pasantiaSeleccionada.observacionesAdicionales}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="modal-footer">
+              <button 
+                className="btn-postular-modal"
+                onClick={() => {
+                  handlePostular(pasantiaSeleccionada.id);
+                  cerrarModal();
+                }}
+                disabled={postulando === pasantiaSeleccionada.id || pasantiaSeleccionada.postulaciones?.some(p => p.estudianteId === currentUser.id)}
+              >
+                {postulando === pasantiaSeleccionada.id ? 'Postulando...' :
+                 pasantiaSeleccionada.postulaciones?.some(p => p.estudianteId === currentUser.id) ? 'Ya Postulado' :
+                 'Postularme'}
+              </button>
+              <button className="btn-cerrar" onClick={cerrarModal}>
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

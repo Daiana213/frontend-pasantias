@@ -23,6 +23,9 @@ export default function PasantiasEmpresa() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [pasantiaExpandida, setPasantiaExpandida] = useState(null);
+  const [pasantiaSeleccionada, setPasantiaSeleccionada] = useState(null);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   useEffect(() => {
     cargarPasantias();
@@ -36,7 +39,7 @@ export default function PasantiasEmpresa() {
       }
 
       const response = await fetch(`${API_URL}/api/pasantias/empresa`, {
-        headers: getAuthHeader().headers
+        headers: getAuthHeader()
       });
       if (!response.ok) {
         throw new Error('Error al cargar las pasantías');
@@ -57,7 +60,7 @@ export default function PasantiasEmpresa() {
     try {
       const response = await fetch(`${API_URL}/api/pasantias`, {
         method: 'POST',
-        headers: getAuthHeader().headers,
+        headers: getAuthHeader(),
         body: JSON.stringify(formData)
       });
 
@@ -97,6 +100,46 @@ export default function PasantiasEmpresa() {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const togglePasantiaExpandida = (pasantiaId) => {
+    setPasantiaExpandida(pasantiaExpandida === pasantiaId ? null : pasantiaId);
+  };
+
+  const abrirModalDetalle = (pasantia) => {
+    setPasantiaSeleccionada(pasantia);
+    setMostrarModal(true);
+  };
+
+  const cerrarModal = () => {
+    setMostrarModal(false);
+    setPasantiaSeleccionada(null);
+  };
+
+  const getEstadoText = (estado) => {
+    switch (estado) {
+      case 'pendiente_sau':
+        return 'Pendiente de revisión';
+      case 'oferta':
+        return 'Publicada';
+      case 'rechazada':
+        return 'Rechazada';
+      default:
+        return estado;
+    }
+  };
+
+  const getEstadoClass = (estado) => {
+    switch (estado) {
+      case 'pendiente_sau':
+        return 'estado-pendiente';
+      case 'oferta':
+        return 'estado-publicada';
+      case 'rechazada':
+        return 'estado-rechazada';
+      default:
+        return 'estado-default';
+    }
   };
 
   return (
@@ -148,7 +191,6 @@ export default function PasantiasEmpresa() {
                 <option value="Tecnicatura Universitaria en Programación">Tecnicatura Universitaria en Programación</option>
                 </select>
               </div>
-
 
               <div className="form-group">
                 <label htmlFor="areaSector">Área o sector</label>
@@ -318,23 +360,97 @@ export default function PasantiasEmpresa() {
             <div className="pasantias-grid">
               {pasantias.map(pasantia => (
                 <div key={pasantia.id} className="pasantia-card">
-                  <h4>{pasantia.titulo}</h4>
-                  <div className={`estado-badge ${pasantia.estado}`}>
-                    {pasantia.estado === 'pendiente_sau' ? 'Pendiente de revisión' :
-                     pasantia.estado === 'oferta' ? 'Publicada' :
-                     pasantia.estado === 'rechazada' ? 'Rechazada' : pasantia.estado}
+                  <div className="pasantia-header">
+                    <h4>{pasantia.titulo}</h4>
+                    <div className={`estado-badge ${getEstadoClass(pasantia.estado)}`}>
+                      {getEstadoText(pasantia.estado)}
+                    </div>
                   </div>
-                  <div className="pasantia-details">
-                    <p><strong>Carrera:</strong> {pasantia.carreraSugerida}</p>
-                    <p><strong>Área:</strong> {pasantia.areaSector}</p>
-                    <p><strong>Modalidad:</strong> {pasantia.modalidad}</p>
-                    <p><strong>Duración:</strong> {pasantia.duracionEstimada}</p>
-                    <p><strong>Fecha límite:</strong> {new Date(pasantia.fechaLimitePostulacion).toLocaleDateString()}</p>
+                  
+                  <div className="pasantia-preview">
+                    <p className="pasantia-carrera">{pasantia.carreraSugerida}</p>
+                    <p className="pasantia-area">{pasantia.areaSector}</p>
+                    <p className="pasantia-modalidad">{pasantia.modalidad}</p>
+                    <p className="pasantia-duracion">{pasantia.duracionEstimada}</p>
+                    <p className="pasantia-fecha">Límite: {new Date(pasantia.fechaLimitePostulacion).toLocaleDateString()}</p>
+                    <p className="pasantia-descripcion-preview">
+                      {pasantia.descripcionTareas ? 
+                        (pasantia.descripcionTareas.length > 100 ? 
+                          `${pasantia.descripcionTareas.substring(0, 100)}...` : 
+                          pasantia.descripcionTareas
+                        ) : 
+                        'Sin descripción disponible'
+                      }
+                    </p>
                   </div>
-                  {pasantia.estado === 'rechazada' && pasantia.motivoRechazo && (
-                    <div className="rechazo-info">
-                      <p><strong>Motivo del rechazo:</strong></p>
-                      <p>{pasantia.motivoRechazo}</p>
+
+                  <div className="pasantia-actions">
+                    <button 
+                      className="btn-ver-detalle"
+                      onClick={() => abrirModalDetalle(pasantia)}
+                    >
+                      Ver detalle
+                    </button>
+                    <button 
+                      className="btn-expandir"
+                      onClick={() => togglePasantiaExpandida(pasantia.id)}
+                    >
+                      {pasantiaExpandida === pasantia.id ? 'Ocultar detalles' : 'Ver detalles'}
+                    </button>
+                  </div>
+
+                  {pasantiaExpandida === pasantia.id && (
+                    <div className="pasantia-detalles-expandidos">
+                      <div className="detalle-grupo">
+                        <h5>Descripción de tareas</h5>
+                        <p>{pasantia.descripcionTareas || 'No disponible'}</p>
+                      </div>
+                      
+                      <div className="detalle-grupo">
+                        <h5>Requisitos</h5>
+                        <p>{pasantia.requisitos || 'No disponible'}</p>
+                      </div>
+                      
+                      <div className="detalle-grupo">
+                        <h5>Información adicional</h5>
+                        <div className="detalle-grid">
+                          <div className="detalle-item">
+                            <span className="detalle-label">Carga horaria:</span>
+                            <span className="detalle-valor">{pasantia.cargaHorariaSemanal || 'No especificada'}</span>
+                          </div>
+                          <div className="detalle-item">
+                            <span className="detalle-label">Horario:</span>
+                            <span className="detalle-valor">{pasantia.horarioPropuesto || 'No especificado'}</span>
+                          </div>
+                          <div className="detalle-item">
+                            <span className="detalle-label">Tipo de jornada:</span>
+                            <span className="detalle-valor">{pasantia.tipoJornada || 'No especificado'}</span>
+                          </div>
+                          <div className="detalle-item">
+                            <span className="detalle-label">Fecha de inicio:</span>
+                            <span className="detalle-valor">
+                              {pasantia.fechaInicioEstimada ? 
+                                new Date(pasantia.fechaInicioEstimada).toLocaleDateString() : 
+                                'No especificada'
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {pasantia.observacionesAdicionales && (
+                        <div className="detalle-grupo">
+                          <h5>Observaciones adicionales</h5>
+                          <p>{pasantia.observacionesAdicionales}</p>
+                        </div>
+                      )}
+                      
+                      {pasantia.estado === 'rechazada' && pasantia.motivoRechazo && (
+                        <div className="detalle-grupo rechazo-info">
+                          <h5>Motivo del rechazo</h5>
+                          <p>{pasantia.motivoRechazo}</p>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -343,6 +459,111 @@ export default function PasantiasEmpresa() {
           )}
         </section>
       </div>
+
+      {/* Modal de Detalle de Pasantía */}
+      {mostrarModal && pasantiaSeleccionada && (
+        <div className="modal-overlay" onClick={cerrarModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>{pasantiaSeleccionada.titulo}</h2>
+              <button className="modal-close" onClick={cerrarModal}>×</button>
+            </div>
+            
+            <div className="modal-body">
+              <div className="detalle-seccion">
+                <h3>Información General</h3>
+                <div className="detalle-grid">
+                  <div className="detalle-item">
+                    <span className="detalle-label">Estado:</span>
+                    <span className={`detalle-valor estado-badge ${getEstadoClass(pasantiaSeleccionada.estado)}`}>
+                      {getEstadoText(pasantiaSeleccionada.estado)}
+                    </span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Carrera sugerida:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.carreraSugerida}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Área/Sector:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.areaSector}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Modalidad:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.modalidad}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Duración:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.duracionEstimada}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Carga horaria:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.cargaHorariaSemanal}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Horario:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.horarioPropuesto}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Tipo de jornada:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.tipoJornada}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Fecha de inicio:</span>
+                    <span className="detalle-valor">
+                      {pasantiaSeleccionada.fechaInicioEstimada ? 
+                        new Date(pasantiaSeleccionada.fechaInicioEstimada).toLocaleDateString() : 
+                        'No especificada'
+                      }
+                    </span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Fecha límite:</span>
+                    <span className="detalle-valor">
+                      {new Date(pasantiaSeleccionada.fechaLimitePostulacion).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="detalle-seccion">
+                <h3>Descripción de Tareas</h3>
+                <p className="detalle-texto">{pasantiaSeleccionada.descripcionTareas || 'No disponible'}</p>
+              </div>
+
+              <div className="detalle-seccion">
+                <h3>Requisitos</h3>
+                <p className="detalle-texto">{pasantiaSeleccionada.requisitos || 'No disponible'}</p>
+              </div>
+
+              {pasantiaSeleccionada.observacionesAdicionales && (
+                <div className="detalle-seccion">
+                  <h3>Observaciones Adicionales</h3>
+                  <p className="detalle-texto">{pasantiaSeleccionada.observacionesAdicionales}</p>
+                </div>
+              )}
+
+              {pasantiaSeleccionada.estado === 'rechazada' && pasantiaSeleccionada.motivoRechazo && (
+                <div className="detalle-seccion rechazo-info">
+                  <h3>Motivo del Rechazo</h3>
+                  <p className="detalle-texto">{pasantiaSeleccionada.motivoRechazo}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="modal-footer">
+              <button className="btn-editar" onClick={() => {
+                // Aquí iría la lógica para editar
+                alert('Funcionalidad de edición en desarrollo');
+              }}>
+                Editar Pasantía
+              </button>
+              <button className="btn-cerrar" onClick={cerrarModal}>
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

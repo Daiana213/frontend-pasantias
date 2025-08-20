@@ -50,11 +50,11 @@ export default function RegistroEstudiante() {
     <>
       <Header />
       <div className="registro-container">
-        <h2>Registro</h2>
-        <p>Registrate como estudiante</p>
+        <h2>Registro de Estudiante</h2>
+        <p>Completa tus datos para crear tu cuenta</p>
         <form className="registro-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">Correo electrónico:</label>
+            <label htmlFor="email">Correo electrónico</label>
             <input 
               id="email"
               type="email" 
@@ -66,7 +66,7 @@ export default function RegistroEstudiante() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="legajo">Legajo:</label>
+            <label htmlFor="legajo">Legajo</label>
             <input 
               id="legajo"
               type="text" 
@@ -78,7 +78,7 @@ export default function RegistroEstudiante() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Contraseña:</label>
+            <label htmlFor="password">Contraseña</label>
             <input 
               id="password"
               type="password" 
@@ -90,11 +90,11 @@ export default function RegistroEstudiante() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="verificarContraseña">Verificar contraseña:</label>
+            <label htmlFor="verificarContraseña">Confirmar contraseña</label>
             <input 
               id="verificarContraseña"
               type="password" 
-              placeholder="Verifica tu contraseña" 
+              placeholder="Confirma tu contraseña" 
               value={verificarContraseña} 
               onChange={e => setVerificarContraseña(e.target.value)} 
               required 
@@ -103,7 +103,7 @@ export default function RegistroEstudiante() {
           </div>
           {error && <div className="error-message">{error}</div>}
           <button type="submit" disabled={loading} className={loading ? 'loading' : ''}>
-            {loading ? 'Registrando...' : 'Registrarse'}
+            {loading ? 'Registrando...' : 'Crear cuenta'}
           </button>
         </form>
         <div className="registro-link">

@@ -1,82 +1,189 @@
+/* Estilos para Registro - Sistema de Pasantías UTN */
 body {
   background: linear-gradient(135deg, var(--color-secundario), #f8fbff 80%);
   min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 .registro-container {
   background: var(--color-fondo);
-  border-radius: 18px;
-  padding: 40px 32px 32px 32px;
-  box-shadow: 0 4px 24px var(--color-sombra);
-  margin: 60px auto 0 auto;
-  max-width: 420px;
-  width: 100%;
+  border-radius: var(--radio-xl);
+  padding: var(--espaciado-2xl) var(--espaciado-xl);
+  box-shadow: var(--sombra-fuerte);
+  margin: var(--espaciado-3xl) auto var(--espaciado-3xl) auto;
+  max-width: 500px;
+  width: calc(100% - var(--espaciado-xl));
   text-align: center;
   font-family: var(--fuente-principal);
-  border: 1.5px solid var(--color-secundario-oscuro);
+  border: 1px solid var(--color-borde);
+  position: relative;
+  overflow: hidden;
+}
+
+.registro-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primario), var(--color-primario-claro));
 }
 
 .registro-container h2 {
   color: var(--color-primario);
-  margin-bottom: 8px;
-  font-size: 2rem;
-  font-family: var(--fuente-principal);
+  margin-bottom: var(--espaciado-sm);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .registro-container p {
   color: var(--color-texto-secundario);
-  margin-bottom: 28px;
+  margin-bottom: var(--espaciado-xl);
   font-size: 1.1rem;
+  font-weight: 400;
 }
 
 .registro-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: var(--espaciado-lg);
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--espaciado-sm);
+  color: var(--color-texto);
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 
 .registro-form input {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1.5px solid var(--color-borde);
+  width: 100%;
+  padding: var(--espaciado-md);
+  border-radius: var(--radio-md);
+  border: 2px solid var(--color-borde);
   font-size: 1rem;
-  font-family: var(--fuente-principal);
-  background: #f7faff;
-  transition: border 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+  background: var(--color-fondo);
+  transition: all var(--transicion-normal);
   outline: none;
+  box-sizing: border-box;
 }
 
 .registro-form input:focus {
-  border: 1.5px solid var(--color-primario-claro);
-  box-shadow: 0 0 0 2px var(--color-secundario-oscuro);
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(26, 60, 107, 0.1);
+}
+
+.registro-form input:disabled {
+  background: var(--color-fondo-terciario);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.error-message {
+  color: var(--color-error);
+  background: rgba(239, 68, 68, 0.1);
+  padding: var(--espaciado-md);
+  border-radius: var(--radio-md);
+  font-size: 0.9rem;
+  margin-top: var(--espaciado-sm);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  text-align: left;
 }
 
 .registro-form button {
-  background: var(--color-boton);
-  color: var(--color-fondo);
+  background: var(--color-primario);
+  color: var(--color-texto-inverso);
   border: none;
-  border-radius: 8px;
-  padding: 12px 0;
+  border-radius: var(--radio-md);
+  padding: var(--espaciado-md) var(--espaciado-xl);
   font-size: 1.1rem;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background 0.2s, box-shadow 0.2s;
-  font-family: var(--fuente-principal);
   font-weight: 600;
-  box-shadow: 0 2px 8px var(--color-sombra);
+  cursor: pointer;
+  margin-top: var(--espaciado-sm);
+  transition: all var(--transicion-normal);
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
 }
 
-.registro-form button:hover {
-  background: var(--color-boton-hover);
-  box-shadow: 0 4px 16px var(--color-sombra);
+.registro-form button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left var(--transicion-lenta);
+}
+
+.registro-form button:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.registro-form button:hover:not(:disabled) {
+  background: var(--color-primario-claro);
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-media);
+}
+
+.registro-form button:disabled {
+  background: var(--color-texto-terciario);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.registro-form button.loading {
+  position: relative;
+  color: transparent;
+}
+
+.registro-form button.loading::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin: -10px 0 0 -10px;
+  border: 3px solid var(--color-texto-inverso);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: button-loading-spinner 1s linear infinite;
+}
+
+@keyframes button-loading-spinner {
+  from {
+    transform: rotate(0turn);
+  }
+  to {
+    transform: rotate(1turn);
+  }
 }
 
 .registro-link {
-  margin-top: 22px;
+  margin-top: var(--espaciado-xl);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--espaciado-sm);
   align-items: center;
+  padding-top: var(--espaciado-xl);
+  border-top: 1px solid var(--color-borde);
+}
+
+.registro-link span {
+  color: var(--color-texto-secundario);
+  font-size: 1rem;
 }
 
 .registro-link button {
@@ -86,17 +193,123 @@ body {
   cursor: pointer;
   text-decoration: underline;
   font-size: 1rem;
-  padding: 0;
-  font-family: var(--fuente-principal);
-  transition: color 0.2s;
+  font-weight: 600;
+  padding: var(--espaciado-xs) var(--espaciado-sm);
+  border-radius: var(--radio-sm);
+  transition: all var(--transicion-normal);
+  font-family: inherit;
 }
 
-.registro-link button:hover {
-  color: var(--color-boton-hover);
+.registro-link button:hover:not(:disabled) {
+  color: var(--color-primario-claro);
+  background: var(--color-secundario);
+  text-decoration: none;
 }
 
-@media (max-width: 600px) {
+.registro-link button:disabled {
+  color: var(--color-texto-terciario);
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .registro-container {
-    padding: 24px 8px 18px 8px;
+    margin: var(--espaciado-xl) auto var(--espaciado-2xl) auto;
+    padding: var(--espaciado-xl) var(--espaciado-lg);
+    width: calc(100% - var(--espaciado-lg));
+    max-width: 450px;
   }
+
+  .registro-container h2 {
+    font-size: 2rem;
+  }
+
+  .registro-container p {
+    font-size: 1rem;
+  }
+
+  .registro-form {
+    gap: var(--espaciado-md);
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+  }
+
+  .registro-form input {
+    padding: var(--espaciado-sm) var(--espaciado-md);
+  }
+
+  .registro-form button {
+    padding: var(--espaciado-sm) var(--espaciado-lg);
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .registro-container {
+    margin: var(--espaciado-lg) auto var(--espaciado-xl) auto;
+    padding: var(--espaciado-lg) var(--espaciado-md);
+    width: calc(100% - var(--espaciado-md));
+    border-radius: var(--radio-lg);
+  }
+
+  .registro-container h2 {
+    font-size: 1.75rem;
+  }
+
+  .registro-container p {
+    font-size: 0.95rem;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+  }
+
+  .registro-form input {
+    font-size: 0.95rem;
+  }
+
+  .registro-form button {
+    font-size: 0.95rem;
+  }
+
+  .registro-link span {
+    font-size: 0.9rem;
+  }
+
+  .registro-link button {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .registro-container {
+    padding: var(--espaciado-md);
+    margin: var(--espaciado-md) auto var(--espaciado-lg) auto;
+  }
+
+  .registro-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .registro-container p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.registro-container {
+  animation: fadeInUp 0.6s ease-out;
 } 

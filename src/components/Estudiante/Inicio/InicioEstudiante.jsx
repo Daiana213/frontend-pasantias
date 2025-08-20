@@ -10,6 +10,8 @@ export default function InicioEstudiante() {
   const [postulaciones, setPostulaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [pasantiaSeleccionada, setPasantiaSeleccionada] = useState(null);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   useEffect(() => {
     const cargarDatos = async () => {
@@ -23,7 +25,7 @@ export default function InicioEstudiante() {
         setPasantias(dataPasantias);
 
         // Cargar postulaciones del estudiante
-        const resPostulaciones = await fetch(`${API_URL}/api/postulaciones/estudiante`, {
+        const resPostulaciones = await fetch(`${API_URL}/api/postulaciones/mis-postulaciones`, {
           headers: getAuthHeader()
         });
         if (resPostulaciones.ok) {
@@ -40,6 +42,42 @@ export default function InicioEstudiante() {
 
     cargarDatos();
   }, []);
+
+  const abrirModalDetalle = (pasantia) => {
+    setPasantiaSeleccionada(pasantia);
+    setMostrarModal(true);
+  };
+
+  const cerrarModal = () => {
+    setMostrarModal(false);
+    setPasantiaSeleccionada(null);
+  };
+
+  const getEstadoText = (estado) => {
+    switch (estado) {
+      case 'pendiente_sau':
+        return 'Pendiente de revisión';
+      case 'oferta':
+        return 'Publicada';
+      case 'rechazada':
+        return 'Rechazada';
+      default:
+        return estado;
+    }
+  };
+
+  const getEstadoClass = (estado) => {
+    switch (estado) {
+      case 'pendiente_sau':
+        return 'estado-pendiente';
+      case 'oferta':
+        return 'estado-publicada';
+      case 'rechazada':
+        return 'estado-rechazada';
+      default:
+        return 'estado-default';
+    }
+  };
 
   if (loading) return <div className="loading-container">Cargando...</div>;
 
@@ -74,18 +112,24 @@ export default function InicioEstudiante() {
 
         <div className="inicio-secciones">
           <section className="inicio-seccion">
-            <h2>Pasantías destacadas</h2>
+            <h2>Pasantías recientes</h2>
             <div className="pasantias-recientes">
               {pasantias.length > 0 ? (
-                pasantias.slice(0, 3).map(pasantia => (
-                  <div key={pasantia.id} className="pasantia-card-mini">
+                pasantias.slice(0, 3).map((pasantia, index) => (
+                  <div key={pasantia.id || `pasantia-${index}`} className="pasantia-card-mini">
                     <h3>{pasantia.titulo}</h3>
                     <p className="empresa-nombre">{pasantia.empresaNombre}</p>
-                    <p className="pasantia-descripcion">{pasantia.descripcion?.substring(0, 100)}...</p>
+                    <p className="pasantia-descripcion">{pasantia.descripcionTareas?.substring(0, 100)}...</p>
                     <div className="pasantia-footer">
                       <span className="pasantia-modalidad">{pasantia.modalidad}</span>
                       <span className="pasantia-fecha">Hasta: {new Date(pasantia.fechaLimitePostulacion).toLocaleDateString()}</span>
                     </div>
+                    <button 
+                      className="btn-ver-detalle"
+                      onClick={() => abrirModalDetalle(pasantia)}
+                    >
+                      Ver detalle
+                    </button>
                   </div>
                 ))
               ) : (
@@ -99,8 +143,8 @@ export default function InicioEstudiante() {
             <h2>Mis postulaciones recientes</h2>
             <div className="postulaciones-recientes">
               {postulaciones.length > 0 ? (
-                postulaciones.slice(0, 3).map(postulacion => (
-                  <div key={postulacion.id} className="postulacion-card-mini">
+                postulaciones.slice(0, 3).map((postulacion, index) => (
+                  <div key={postulacion.id || `postulacion-${index}`} className="postulacion-card-mini">
                     <h3>{postulacion.pasantiaTitulo}</h3>
                     <div className="postulacion-estado">
                       <span className={`estado-badge ${postulacion.estado}`}>{postulacion.estado}</span>
@@ -115,16 +159,91 @@ export default function InicioEstudiante() {
             <a href="/mis-postulaciones" className="ver-mas-link">Ver todas mis postulaciones</a>
           </section>
         </div>
+      </div>
 
-        <div className="acciones-rapidas">
-          <h2>Acciones rápidas</h2>
-          <div className="acciones-botones">
-            <a href="/pasantias" className="accion-btn">Buscar pasantías</a>
-            <a href="/perfil-estudiante" className="accion-btn">Actualizar perfil</a>
-            <a href="/comunicacion" className="accion-btn">Mensajes</a>
+      {/* Modal de Detalle de Pasantía */}
+      {mostrarModal && pasantiaSeleccionada && (
+        <div className="modal-overlay" onClick={cerrarModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>{pasantiaSeleccionada.titulo}</h2>
+              <button className="modal-close" onClick={cerrarModal}>×</button>
+            </div>
+            
+            <div className="modal-body">
+              <div className="detalle-seccion">
+                <h3>Información General</h3>
+                <div className="detalle-grid">
+                  <div className="detalle-item">
+                    <span className="detalle-label">Empresa:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.empresaNombre}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Carrera sugerida:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.carreraSugerida}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Área/Sector:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.areaSector}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Modalidad:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.modalidad}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Duración:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.duracionEstimada}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Carga horaria:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.cargaHorariaSemanal}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Horario:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.horarioPropuesto}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Tipo de jornada:</span>
+                    <span className="detalle-valor">{pasantiaSeleccionada.tipoJornada}</span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Fecha de inicio:</span>
+                    <span className="detalle-valor">
+                      {pasantiaSeleccionada.fechaInicioEstimada ? 
+                        new Date(pasantiaSeleccionada.fechaInicioEstimada).toLocaleDateString() : 
+                        'No especificada'
+                      }
+                    </span>
+                  </div>
+                  <div className="detalle-item">
+                    <span className="detalle-label">Fecha límite:</span>
+                    <span className="detalle-valor">
+                      {new Date(pasantiaSeleccionada.fechaLimitePostulacion).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="detalle-seccion">
+                <h3>Descripción de Tareas</h3>
+                <p className="detalle-texto">{pasantiaSeleccionada.descripcionTareas || 'No disponible'}</p>
+              </div>
+
+              <div className="detalle-seccion">
+                <h3>Requisitos</h3>
+                <p className="detalle-texto">{pasantiaSeleccionada.requisitos || 'No disponible'}</p>
+              </div>
+
+              {pasantiaSeleccionada.observacionesAdicionales && (
+                <div className="detalle-seccion">
+                  <h3>Observaciones Adicionales</h3>
+                  <p className="detalle-texto">{pasantiaSeleccionada.observacionesAdicionales}</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

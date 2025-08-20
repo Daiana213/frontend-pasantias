@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
 import LandingPage from './components/LandingPage/LandingPage';
 import LoginEstudiante from './components/Login/LoginEstudiante';
@@ -20,11 +20,11 @@ import PerfilEmpresa from './components/Empresa/Perfil/PerfilEmpresa';
 import ConfiguracionEmpresa from './components/Empresa/Configuracion/ConfiguracionEmpresa';
 import VerificarEmail from './components/Auth/VerificarEmail';
 import PrivateRoute from './components/Auth/PrivateRoute';
-import './styles/colors.css';
+import './styles/globals.css';
 
 function App() {
   return (
-    <Router>
+    <Router future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login-estudiante" element={<LoginEstudiante />} />
@@ -139,6 +139,9 @@ function App() {
             </PrivateRoute>
           } 
         />
+        
+        {/* Ruta catch-all para manejar rutas no encontradas */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Footer />
     </Router>

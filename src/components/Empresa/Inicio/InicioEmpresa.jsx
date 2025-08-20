@@ -120,15 +120,6 @@ export default function InicioEmpresa() {
             <a href="/empresa/postulaciones" className="ver-mas-link">Ver todas las postulaciones</a>
           </section>
         </div>
-
-        <div className="acciones-rapidas">
-          <h2>Acciones rápidas</h2>
-          <div className="acciones-botones">
-            <a href="/empresa/pasantias/nueva" className="accion-btn">Publicar nueva pasantía</a>
-            <a href="/empresa/perfil" className="accion-btn">Actualizar perfil</a>
-            <a href="/empresa/comunicacion" className="accion-btn">Mensajes</a>
-          </div>
-        </div>
       </div>
     </>
   );

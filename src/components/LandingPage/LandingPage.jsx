@@ -8,6 +8,7 @@ export default function LandingPage() {
   return (
     <>
       <Header />
+
       <div className="landing-bg">
         <div className="landing-container">
           <header className="landing-header">
@@ -15,6 +16,7 @@ export default function LandingPage() {
             <h1>PASANTIAS UTN</h1>
             <h2>REGIONAL SAN FRANCISCO</h2>
           </header>
+
           <main className="landing-main">
             <p>
               Da el primer paso crucial hacia tu futuro profesional.<br />
@@ -27,6 +29,7 @@ export default function LandingPage() {
               <button onClick={() => navigate("/login-estudiante")}>Estudiante</button>
             </div>
           </main>
+
         </div>
       </div>
     </>
