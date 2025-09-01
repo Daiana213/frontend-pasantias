@@ -309,6 +309,50 @@
   font-weight: 500;
 }
 
+/* Detalles de postulación */
+.postulacion-detalles {
+  margin: var(--espaciado-sm) 0;
+  padding: var(--espaciado-sm);
+  background: var(--color-fondo-terciario);
+  border-radius: var(--radio-sm);
+  border-left: 3px solid var(--color-primario);
+}
+
+.postulacion-detalles p {
+  margin: var(--espaciado-xs) 0;
+  color: var(--color-texto);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.pasantia-carrera {
+  font-weight: 600;
+  color: var(--color-primario) !important;
+}
+
+.pasantia-modalidad::before {
+  content: '📍 ';
+}
+
+.pasantia-duracion::before {
+  content: '⏰ ';
+}
+
+.motivo-rechazo-mini {
+  margin-top: var(--espaciado-sm) !important;
+  padding: var(--espaciado-sm);
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: var(--color-error) !important;
+  border-radius: var(--radio-sm);
+  font-size: 0.8rem !important;
+  border-left: 3px solid var(--color-error);
+}
+
+.estado-badge.cancelada {
+  background: var(--color-texto-terciario);
+  color: var(--color-texto-inverso);
+}
+
 /* Enlaces */
 .ver-mas-link {
   display: inline-block;

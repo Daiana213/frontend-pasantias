@@ -1,4 +1,3 @@
-/* Estilos para Pasantías Estudiante - Sistema de Pasantías UTN */
 .pasantias-estudiante-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -212,7 +211,8 @@
 }
 
 .btn-ver-detalle,
-.postular-btn {
+.postular-btn,
+.retirar-btn {
   flex: 1;
   padding: var(--espaciado-sm) var(--espaciado-md);
   border-radius: var(--radio-md);
@@ -246,6 +246,28 @@
 }
 
 .postular-btn:disabled {
+  background: var(--color-texto-terciario);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.postular-btn.postulado {
+  background: var(--color-info);
+  color: var(--color-texto-inverso);
+}
+
+.retirar-btn {
+  background: var(--color-peligro);
+  color: var(--color-error);
+}
+
+.retirar-btn:hover:not(:disabled) {
+  background: var(--color-peligro-claro);
+  transform: translateY(-1px);
+  box-shadow: var(--sombra-media);
+}
+
+.retirar-btn:disabled {
   background: var(--color-texto-terciario);
   cursor: not-allowed;
   opacity: 0.7;
@@ -402,6 +424,35 @@
 }
 
 .btn-postular-modal:disabled {
+  background: var(--color-texto-terciario);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-postular-modal.postulado {
+  background: var(--color-info);
+  color: var(--color-texto-inverso);
+}
+
+.btn-retirar-modal {
+  background: var(--color-peligro);
+  color: var(--color-texto-inverso);
+  border: none;
+  padding: var(--espaciado-md) var(--espaciado-xl);
+  border-radius: var(--radio-lg);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all var(--transicion-normal);
+}
+
+.btn-retirar-modal:hover:not(:disabled) {
+  background: var(--color-peligro-claro);
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-media);
+}
+
+.btn-retirar-modal:disabled {
   background: var(--color-texto-terciario);
   cursor: not-allowed;
   opacity: 0.7;

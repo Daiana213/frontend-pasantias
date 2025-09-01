@@ -25,7 +25,7 @@ export default function InicioEmpresa() {
         }
 
         // Cargar postulaciones a las pasantías de la empresa
-        const resPostulaciones = await fetch(`${API_URL}/api/postulaciones/empresa`, {
+        const resPostulaciones = await fetch(`${API_URL}/api/postulaciones/empresa/resumen`, {
           headers: getAuthHeader()
         });
         if (resPostulaciones.ok) {
@@ -50,7 +50,7 @@ export default function InicioEmpresa() {
       <HeaderEmpresa />
       <div className="inicio-empresa-container">
         <div className="inicio-header">
-          <h1 className="inicio-titulo">Bienvenido, {currentUser?.nombre}</h1>
+          <h1 className="inicio-titulo">Bienvenido, {currentUser?.nombre || currentUser?.razonSocial || currentUser?.correo || currentUser?.email}</h1>
           <p className="inicio-subtitulo">Panel de Gestión de Pasantías</p>
         </div>
 

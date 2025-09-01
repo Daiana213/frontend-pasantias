@@ -13,6 +13,7 @@ export default function PasantiasEstudiante() {
   const [notificacionActiva, setNotificacionActiva] = useState(false);
   const [pasantiaSeleccionada, setPasantiaSeleccionada] = useState(null);
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [retirando, setRetirando] = useState(null);
   const { currentUser } = useAuth();
   
   // Estados para filtros
@@ -71,6 +72,29 @@ export default function PasantiasEstudiante() {
       setError(error.message);
     } finally {
       setPostulando(null);
+    }
+  };
+
+  const handleRetirarPostulacion = async (pasantiaId) => {
+    setRetirando(pasantiaId);
+    try {
+      const response = await fetch(`${API_URL}/api/postulaciones/${pasantiaId}`, {
+        method: 'DELETE',
+        headers: getAuthHeader()
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Error al retirar la postulación');
+      }
+
+      // Notificar éxito
+      setError('');
+      cargarPasantias(); // Recargar para actualizar estados
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setRetirando(null);
     }
   };
 
@@ -308,15 +332,44 @@ export default function PasantiasEstudiante() {
                 >
                   Ver detalle
                 </button>
-                <button
-                  onClick={() => handlePostular(pasantia.id)}
-                  disabled={postulando === pasantia.id || pasantia.postulaciones?.some(p => p.estudianteId === currentUser.id)}
-                  className="postular-btn"
-                >
-                  {postulando === pasantia.id ? 'Postulando...' :
-                   pasantia.postulaciones?.some(p => p.estudianteId === currentUser.id) ? 'Ya Postulado' :
-                   'Postularme'}
-                </button>
+                {(() => {
+                  const postulacion = pasantia.postulaciones?.find(p => p.estudianteId === currentUser.id);
+                  const yaPostulado = !!postulacion;
+                  const postulacionPendiente = postulacion?.estado === 'pendiente';
+                  
+                  if (yaPostulado && postulacionPendiente) {
+                    return (
+                      <button
+                        onClick={() => handleRetirarPostulacion(pasantia.id)}
+                        disabled={retirando === pasantia.id}
+                        className="retirar-btn"
+                      >
+                        {retirando === pasantia.id ? 'Retirando...' : 'Retirar postulación'}
+                      </button>
+                    );
+                  } else if (yaPostulado) {
+                    return (
+                      <button
+                        disabled={true}
+                        className="postular-btn postulado"
+                      >
+                        {postulacion.estado === 'aceptada' ? 'Postulación aceptada' :
+                         postulacion.estado === 'rechazada' ? 'Postulación rechazada' :
+                         'Ya Postulado'}
+                      </button>
+                    );
+                  } else {
+                    return (
+                      <button
+                        onClick={() => handlePostular(pasantia.id)}
+                        disabled={postulando === pasantia.id}
+                        className="postular-btn"
+                      >
+                        {postulando === pasantia.id ? 'Postulando...' : 'Postularme'}
+                      </button>
+                    );
+                  }
+                })()}
               </div>
             </div>
           ))}
@@ -405,18 +458,50 @@ export default function PasantiasEstudiante() {
             </div>
 
             <div className="modal-footer">
-              <button 
-                className="btn-postular-modal"
-                onClick={() => {
-                  handlePostular(pasantiaSeleccionada.id);
-                  cerrarModal();
-                }}
-                disabled={postulando === pasantiaSeleccionada.id || pasantiaSeleccionada.postulaciones?.some(p => p.estudianteId === currentUser.id)}
-              >
-                {postulando === pasantiaSeleccionada.id ? 'Postulando...' :
-                 pasantiaSeleccionada.postulaciones?.some(p => p.estudianteId === currentUser.id) ? 'Ya Postulado' :
-                 'Postularme'}
-              </button>
+              {(() => {
+                const postulacion = pasantiaSeleccionada.postulaciones?.find(p => p.estudianteId === currentUser.id);
+                const yaPostulado = !!postulacion;
+                const postulacionPendiente = postulacion?.estado === 'pendiente';
+                
+                if (yaPostulado && postulacionPendiente) {
+                  return (
+                    <button
+                      onClick={() => {
+                        handleRetirarPostulacion(pasantiaSeleccionada.id);
+                        cerrarModal();
+                      }}
+                      disabled={retirando === pasantiaSeleccionada.id}
+                      className="btn-retirar-modal"
+                    >
+                      {retirando === pasantiaSeleccionada.id ? 'Retirando...' : 'Retirar postulación'}
+                    </button>
+                  );
+                } else if (yaPostulado) {
+                  return (
+                    <button
+                      disabled={true}
+                      className="btn-postular-modal postulado"
+                    >
+                      {postulacion.estado === 'aceptada' ? 'Postulación aceptada' :
+                       postulacion.estado === 'rechazada' ? 'Postulación rechazada' :
+                       'Ya Postulado'}
+                    </button>
+                  );
+                } else {
+                  return (
+                    <button 
+                      className="btn-postular-modal"
+                      onClick={() => {
+                        handlePostular(pasantiaSeleccionada.id);
+                        cerrarModal();
+                      }}
+                      disabled={postulando === pasantiaSeleccionada.id}
+                    >
+                      {postulando === pasantiaSeleccionada.id ? 'Postulando...' : 'Postularme'}
+                    </button>
+                  );
+                }
+              })()}
               <button className="btn-cerrar" onClick={cerrarModal}>
                 Cerrar
               </button>

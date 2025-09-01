@@ -26,6 +26,10 @@ export default function PasantiasEmpresa() {
   const [pasantiaExpandida, setPasantiaExpandida] = useState(null);
   const [pasantiaSeleccionada, setPasantiaSeleccionada] = useState(null);
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [mostrarModalRetirar, setMostrarModalRetirar] = useState(false);
+  const [pasantiaARetirar, setPasantiaARetirar] = useState(null);
+  const [justificacionRetiro, setJustificacionRetiro] = useState('');
+  const [retirando, setRetirando] = useState(false);
 
   useEffect(() => {
     cargarPasantias();
@@ -116,6 +120,7 @@ export default function PasantiasEmpresa() {
     setPasantiaSeleccionada(null);
   };
 
+
   const getEstadoText = (estado) => {
     switch (estado) {
       case 'pendiente_sau':
@@ -124,6 +129,8 @@ export default function PasantiasEmpresa() {
         return 'Publicada';
       case 'rechazada':
         return 'Rechazada';
+      case 'retirada':
+        return 'Retirada';
       default:
         return estado;
     }
@@ -137,9 +144,55 @@ export default function PasantiasEmpresa() {
         return 'estado-publicada';
       case 'rechazada':
         return 'estado-rechazada';
+      case 'retirada':
+        return 'estado-retirada';
       default:
         return 'estado-default';
     }
+  };
+
+  const confirmarRetirarOferta = (pasantia) => {
+    setPasantiaARetirar(pasantia);
+    setMostrarModalRetirar(true);
+  };
+
+  const retirarOferta = async () => {
+    if (!pasantiaARetirar || !justificacionRetiro.trim()) {
+      setError('Debe proporcionar una justificación para retirar la oferta');
+      return;
+    }
+
+    setRetirando(true);
+    try {
+      const response = await fetch(`${API_URL}/api/pasantias/${pasantiaARetirar.id}/retirar`, {
+        method: 'POST',
+        headers: getAuthHeader(),
+        body: JSON.stringify({ justificacion: justificacionRetiro })
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Error al retirar la oferta');
+      }
+
+      await cargarPasantias();
+      setMostrarModalRetirar(false);
+      setPasantiaARetirar(null);
+      setJustificacionRetiro('');
+      setError('');
+      alert('Oferta retirada exitosamente');
+    } catch (error) {
+      console.error('Error:', error);
+      setError(error.message);
+    } finally {
+      setRetirando(false);
+    }
+  };
+
+  const cancelarRetiro = () => {
+    setMostrarModalRetirar(false);
+    setPasantiaARetirar(null);
+    setJustificacionRetiro('');
   };
 
   return (
@@ -391,68 +444,17 @@ export default function PasantiasEmpresa() {
                     >
                       Ver detalle
                     </button>
-                    <button 
-                      className="btn-expandir"
-                      onClick={() => togglePasantiaExpandida(pasantia.id)}
-                    >
-                      {pasantiaExpandida === pasantia.id ? 'Ocultar detalles' : 'Ver detalles'}
-                    </button>
+                    {(pasantia.estado === 'oferta' || pasantia.estado === 'pendiente_sau') && (
+                      <button
+                        className="btn-retirar-oferta"
+                        onClick={() => confirmarRetirarOferta(pasantia)}
+                        disabled={retirando}
+                      >
+                        {retirando ? 'Retirando...' : 'Retirar oferta'}
+                      </button>
+                    )}
                   </div>
 
-                  {pasantiaExpandida === pasantia.id && (
-                    <div className="pasantia-detalles-expandidos">
-                      <div className="detalle-grupo">
-                        <h5>Descripción de tareas</h5>
-                        <p>{pasantia.descripcionTareas || 'No disponible'}</p>
-                      </div>
-                      
-                      <div className="detalle-grupo">
-                        <h5>Requisitos</h5>
-                        <p>{pasantia.requisitos || 'No disponible'}</p>
-                      </div>
-                      
-                      <div className="detalle-grupo">
-                        <h5>Información adicional</h5>
-                        <div className="detalle-grid">
-                          <div className="detalle-item">
-                            <span className="detalle-label">Carga horaria:</span>
-                            <span className="detalle-valor">{pasantia.cargaHorariaSemanal || 'No especificada'}</span>
-                          </div>
-                          <div className="detalle-item">
-                            <span className="detalle-label">Horario:</span>
-                            <span className="detalle-valor">{pasantia.horarioPropuesto || 'No especificado'}</span>
-                          </div>
-                          <div className="detalle-item">
-                            <span className="detalle-label">Tipo de jornada:</span>
-                            <span className="detalle-valor">{pasantia.tipoJornada || 'No especificado'}</span>
-                          </div>
-                          <div className="detalle-item">
-                            <span className="detalle-label">Fecha de inicio:</span>
-                            <span className="detalle-valor">
-                              {pasantia.fechaInicioEstimada ? 
-                                new Date(pasantia.fechaInicioEstimada).toLocaleDateString() : 
-                                'No especificada'
-                              }
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {pasantia.observacionesAdicionales && (
-                        <div className="detalle-grupo">
-                          <h5>Observaciones adicionales</h5>
-                          <p>{pasantia.observacionesAdicionales}</p>
-                        </div>
-                      )}
-                      
-                      {pasantia.estado === 'rechazada' && pasantia.motivoRechazo && (
-                        <div className="detalle-grupo rechazo-info">
-                          <h5>Motivo del rechazo</h5>
-                          <p>{pasantia.motivoRechazo}</p>
-                        </div>
-                      )}
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -557,8 +559,71 @@ export default function PasantiasEmpresa() {
               }}>
                 Editar Pasantía
               </button>
+              {(pasantiaSeleccionada.estado === 'oferta' || pasantiaSeleccionada.estado === 'pendiente_sau') && (
+                <button
+                  className="btn-retirar-oferta"
+                  onClick={() => {
+                    cerrarModal();
+                    confirmarRetirarOferta(pasantiaSeleccionada);
+                  }}
+                  disabled={retirando}
+                >
+                  {retirando ? 'Retirando...' : 'Retirar oferta'}
+                </button>
+              )}
               <button className="btn-cerrar" onClick={cerrarModal}>
                 Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de confirmación para retirar oferta */}
+      {mostrarModalRetirar && pasantiaARetirar && (
+        <div className="modal-overlay">
+          <div className="modal-content modal-retirar">
+            <div className="modal-header">
+              <h2>Retirar oferta de pasantía</h2>
+            </div>
+            
+            <div className="modal-body">
+              <p>¿Estás seguro de que deseas retirar la siguiente oferta de pasantía?</p>
+              <div className="oferta-info">
+                <h3>{pasantiaARetirar.titulo}</h3>
+                <p><strong>Carrera:</strong> {pasantiaARetirar.carreraSugerida}</p>
+                <p><strong>Área:</strong> {pasantiaARetirar.areaSector}</p>
+                <p><strong>Estado actual:</strong> {getEstadoText(pasantiaARetirar.estado)}</p>
+              </div>
+              
+              <div className="justificacion-container">
+                <label htmlFor="justificacion">Justificación (requerida):</label>
+                <textarea
+                  id="justificacion"
+                  value={justificacionRetiro}
+                  onChange={(e) => setJustificacionRetiro(e.target.value)}
+                  placeholder="Proporciona una justificación para el retiro de la oferta..."
+                  rows="4"
+                  className="justificacion-textarea"
+                />
+              </div>
+              <p className="advertencia">Esta acción notificará a todos los estudiantes que se postularon y no se puede deshacer.</p>
+            </div>
+
+            <div className="modal-footer">
+              <button 
+                onClick={retirarOferta}
+                disabled={!justificacionRetiro.trim() || retirando}
+                className="btn-confirmar-retiro"
+              >
+                {retirando ? 'Retirando...' : 'Confirmar retiro'}
+              </button>
+              <button 
+                onClick={cancelarRetiro}
+                className="btn-cancelar"
+                disabled={retirando}
+              >
+                Cancelar
               </button>
             </div>
           </div>

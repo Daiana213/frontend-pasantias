@@ -32,7 +32,12 @@ export default function LoginEmpresa() {
           role: "empresa",
           ...data
         };
-        localStorage.setItem("token", data.token);
+        if (data.accessToken) {
+          localStorage.setItem("token", data.accessToken);
+        }
+        if (data.refreshToken) {
+          localStorage.setItem("refreshToken", data.refreshToken);
+        }
         localStorage.setItem("usuario", JSON.stringify(userData));
         setCurrentUser(userData);
         navigate("/inicio-empresa");

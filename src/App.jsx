@@ -8,6 +8,7 @@ import RegistroEmpresa from './components/Registro/RegistroEmpresa';
 import InicioEstudiante from './components/Estudiante/Inicio/InicioEstudiante';
 import InicioEmpresa from './components/Empresa/Inicio/InicioEmpresa';
 import Pasantias from './components/Estudiante/Pasantias/PasantiasEstudiante';
+import MisPostulaciones from './components/Estudiante/Postulaciones/MisPostulaciones';
 import Comunicacion from './components/Estudiante/Comunicacion/ComunicacionEstudiante';
 import Evaluacion from './components/Estudiante/Evaluacion/EvaluacionEstudiante';
 import PerfilEstudiante from './components/Estudiante/Perfil/PerfilEstudiante';
@@ -54,6 +55,14 @@ function App() {
           element={
             <PrivateRoute requiredRole="estudiante">
               <Pasantias />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/mis-postulaciones" 
+          element={
+            <PrivateRoute requiredRole="estudiante">
+              <MisPostulaciones />
             </PrivateRoute>
           } 
         />

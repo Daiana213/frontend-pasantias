@@ -35,14 +35,20 @@ export default function LoginEstudiante() {
         throw new Error(data.message || "Error al iniciar sesión");
       }
 
-      localStorage.setItem("token", data.token);
+      // Guardar tokens devueltos por el backend
+      if (data.accessToken) {
+        localStorage.setItem("token", data.accessToken);
+      }
+      if (data.refreshToken) {
+        localStorage.setItem("refreshToken", data.refreshToken);
+      }
       setCurrentUser({
-        rol: "estudiante", // Cambiar tipo por rol
+        rol: "estudiante",
         ...data
       });
 
       localStorage.setItem("usuario", JSON.stringify({
-        role: "estudiante", // Cambiar tipo por rol
+        role: "estudiante",
         ...data
       }));
     } catch (error) {

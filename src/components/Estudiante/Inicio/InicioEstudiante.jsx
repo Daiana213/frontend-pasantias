@@ -86,7 +86,7 @@ export default function InicioEstudiante() {
       <HeaderEstudiante />
       <div className="inicio-estudiante-container">
         <div className="inicio-header">
-          <h1 className="inicio-titulo">Bienvenido, {currentUser?.nombre || currentUser?.email}</h1>
+          <h1 className="inicio-titulo">Bienvenido, {currentUser?.nombre || currentUser?.apellido ? `${currentUser?.nombre || ''} ${currentUser?.apellido || ''}`.trim() : currentUser?.email}</h1>
           <p className="inicio-subtitulo">Sistema de Pasantías UTN</p>
         </div>
 
@@ -145,11 +145,26 @@ export default function InicioEstudiante() {
               {postulaciones.length > 0 ? (
                 postulaciones.slice(0, 3).map((postulacion, index) => (
                   <div key={postulacion.id || `postulacion-${index}`} className="postulacion-card-mini">
-                    <h3>{postulacion.pasantiaTitulo}</h3>
-                    <div className="postulacion-estado">
-                      <span className={`estado-badge ${postulacion.estado}`}>{postulacion.estado}</span>
-                      <span className="postulacion-fecha">{new Date(postulacion.fecha).toLocaleDateString()}</span>
+                    <h3>{postulacion.pasantia?.titulo || 'Pasantía no disponible'}</h3>
+                    <p className="empresa-nombre">{postulacion.pasantia?.empresa || 'Empresa no disponible'}</p>
+                    <div className="postulacion-detalles">
+                      <p className="pasantia-carrera">{postulacion.pasantia?.carreraSugerida || 'N/A'}</p>
+                      <p className="pasantia-modalidad">{postulacion.pasantia?.modalidad || 'N/A'}</p>
+                      <p className="pasantia-duracion">{postulacion.pasantia?.duracionEstimada || 'N/A'}</p>
                     </div>
+                    <div className="postulacion-estado">
+                      <span className={`estado-badge ${postulacion.estado}`}>
+                        {postulacion.estado === 'pendiente' ? 'Pendiente' :
+                         postulacion.estado === 'aceptada' ? 'Aceptada' :
+                         postulacion.estado === 'rechazada' ? 'Rechazada' :
+                         postulacion.estado === 'cancelada' ? 'Cancelada' :
+                         postulacion.estado}
+                      </span>
+                      <span className="postulacion-fecha">Postulado: {new Date(postulacion.fecha).toLocaleDateString()}</span>
+                    </div>
+                    {postulacion.motivoRechazo && (
+                      <p className="motivo-rechazo-mini">Motivo: {postulacion.motivoRechazo}</p>
+                    )}
                   </div>
                 ))
               ) : (
