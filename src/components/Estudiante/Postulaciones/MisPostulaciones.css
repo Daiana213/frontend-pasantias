@@ -221,18 +221,20 @@
   color: white;
 }
 
-/* Modal */
+/* Modal de Detalle */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1000;
+  justify-content: center;
+  z-index: var(--z-modal);
+  padding: var(--espaciado-md);
+  animation: fadeIn 0.3s ease-out;
 }
 
 .modal-content {
@@ -250,14 +252,22 @@
 }
 
 .modal-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--espaciado-xl);
+  border-bottom: 1px solid var(--color-borde);
+  background: var(--color-primario);
+  color: var(--color-texto-inverso);
+  border-radius: var(--radio-xl) var(--radio-xl) 0 0;
+  box-shadow: 0 2px 8px rgba(26, 60, 107, 0.3);
 }
 
 .modal-header h2 {
   margin: 0;
-  color: #2c3e50;
   font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-texto-inverso);
 }
 
 .modal-body {
@@ -398,4 +408,67 @@
   margin-bottom: 1rem;
   border: 1px solid #f5c6cb;
   text-align: center;
+}
+
+.modal-close {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-texto-inverso);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: var(--espaciado-xs);
+  border-radius: var(--radio-sm);
+  transition: all var(--transicion-normal);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1);
+}
+
+.detalle-seccion {
+  margin-bottom: var(--espaciado-xl);
+  background: var(--color-fondo-secundario);
+  padding: var(--espaciado-lg);
+  border-radius: var(--radio-lg);
+  border: 1px solid var(--color-borde-claro);
+}
+
+.detalle-seccion h3 {
+  color: var(--color-primario);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 var(--espaciado-md) 0;
+  padding-bottom: var(--espaciado-sm);
+  border-bottom: 2px solid var(--color-secundario);
+}
+
+.detalle-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-xs);
+  background: var(--color-fondo);
+  padding: var(--espaciado-md);
+  border-radius: var(--radio-md);
+  border: 1px solid var(--color-borde-claro);
+}
+
+.detalle-label {
+  color: var(--color-texto-secundario);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detalle-valor {
+  color: var(--color-texto);
+  font-weight: 600;
+  font-size: 0.95rem;
 }

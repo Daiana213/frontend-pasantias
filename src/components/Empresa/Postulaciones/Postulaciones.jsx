@@ -63,12 +63,14 @@ export default function Postulaciones() {
     }
   };
 
-  const confirmarRechazar = (pasantiaId, estudianteId, pasantiaTitulo, estudianteEmail) => {
+  const confirmarRechazar = (pasantiaId, estudianteId, pasantiaTitulo, estudiante) => {
     setPostulacionARechazar({
       pasantiaId,
       estudianteId,
       pasantiaTitulo,
-      estudianteEmail
+      estudianteEmail: estudiante?.email,
+      estudianteNombre: estudiante?.nombre,
+      estudianteCarrera: estudiante?.carrera
     });
     setMostrarModalRechazar(true);
   };
@@ -198,16 +200,58 @@ export default function Postulaciones() {
                       </div>
 
                       <div className="estudiante-info">
-                        <p><strong>Email:</strong> {postulacion.estudiante?.email || 'No disponible'}</p>
-                        <p><strong>Legajo:</strong> {postulacion.estudiante?.legajo || 'No disponible'}</p>
-                        <p><strong>Fecha de postulación:</strong> {new Date(postulacion.fecha).toLocaleDateString()}</p>
-                        
-                        {postulacion.motivoRechazo && (
-                          <div className="motivo-rechazo">
-                            <p><strong>Motivo del rechazo:</strong></p>
-                            <p className="motivo-texto">{postulacion.motivoRechazo}</p>
+                        <div className="estudiante-datos-principales">
+                          <h4>Datos del Estudiante</h4>
+                          <div className="datos-grid">
+                            <div className="dato-item">
+                              <span className="dato-label">Nombre completo:</span>
+                              <span className="dato-valor">
+                                {postulacion.estudiante?.nombre || 'No disponible'}
+                              </span>
+                            </div>
+                            <div className="dato-item">
+                              <span className="dato-label">Email:</span>
+                              <span className="dato-valor">
+                                {postulacion.estudiante?.email || 'No disponible'}
+                              </span>
+                            </div>
+                            <div className="dato-item">
+                              <span className="dato-label">Carrera:</span>
+                              <span className="dato-valor">
+                                {postulacion.estudiante?.carrera || 'No disponible'}
+                              </span>
+                            </div>
+                            <div className="dato-item">
+                              <span className="dato-label">Año de cursado:</span>
+                              <span className="dato-valor">
+                                {postulacion.estudiante?.anioCursado || 'No disponible'}
+                              </span>
+                            </div>
+                            <div className="dato-item">
+                              <span className="dato-label">Promedio:</span>
+                              <span className="dato-valor">
+                                {postulacion.estudiante?.promedio ? `${postulacion.estudiante.promedio}/10` : 'No disponible'}
+                              </span>
+                            </div>
+                            <div className="dato-item">
+                              <span className="dato-label">Teléfono:</span>
+                              <span className="dato-valor">
+                                {postulacion.estudiante?.telefono || 'No disponible'}
+                              </span>
+                            </div>
                           </div>
-                        )}
+                        </div>
+                        
+                        <div className="postulacion-metadata">
+                          <p><strong>Fecha de postulación:</strong> {new Date(postulacion.fecha).toLocaleDateString()}</p>
+                          
+                          {postulacion.motivoRechazo && (
+                            <div className="motivo-rechazo">
+                              <p><strong>Motivo del rechazo:</strong></p>
+                              <p className="motivo-texto">{postulacion.motivoRechazo}</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
 
                       {postulacion.estado === 'pendiente' && (
@@ -224,7 +268,7 @@ export default function Postulaciones() {
                               pasantia.id, 
                               postulacion.estudianteId,
                               pasantia.titulo,
-                              postulacion.estudiante?.email
+                              postulacion.estudiante
                             )}
                             disabled={procesando === `${pasantia.id}-${postulacion.estudianteId}`}
                             className="btn-rechazar"
@@ -265,8 +309,16 @@ export default function Postulaciones() {
             <div className="modal-body">
               <p>¿Estás seguro de que deseas rechazar la postulación de:</p>
               <div className="postulacion-info">
-                <p><strong>Email:</strong> {postulacionARechazar.estudianteEmail}</p>
-                <p><strong>Pasantía:</strong> {postulacionARechazar.pasantiaTitulo}</p>
+                <div className="estudiante-resumen">
+                  <h4>Estudiante</h4>
+                  <p><strong>Nombre:</strong> {postulacionARechazar.estudianteNombre || 'No disponible'}</p>
+                  <p><strong>Email:</strong> {postulacionARechazar.estudianteEmail}</p>
+                  <p><strong>Carrera:</strong> {postulacionARechazar.estudianteCarrera || 'No disponible'}</p>
+                </div>
+                <div className="pasantia-resumen">
+                  <h4>Pasantía</h4>
+                  <p><strong>Título:</strong> {postulacionARechazar.pasantiaTitulo}</p>
+                </div>
               </div>
               
               <div className="motivo-container">

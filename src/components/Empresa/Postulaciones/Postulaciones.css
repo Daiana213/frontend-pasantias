@@ -164,7 +164,67 @@
 
 /* Información del estudiante */
 .estudiante-info {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--espaciado-lg);
+}
+
+.estudiante-datos-principales {
+  background: var(--color-fondo-secundario);
+  padding: var(--espaciado-lg);
+  border-radius: var(--radio-lg);
+  border: 1px solid var(--color-borde-claro);
+  margin-bottom: var(--espaciado-md);
+}
+
+.estudiante-datos-principales h4 {
+  color: var(--color-primario);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 var(--espaciado-md) 0;
+  padding-bottom: var(--espaciado-sm);
+  border-bottom: 2px solid var(--color-secundario);
+}
+
+.datos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--espaciado-md);
+}
+
+.dato-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-xs);
+}
+
+.dato-label {
+  color: var(--color-texto-secundario);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dato-valor {
+  color: var(--color-texto);
+  font-weight: 600;
+  font-size: 0.95rem;
+  background: var(--color-fondo);
+  padding: var(--espaciado-sm);
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--color-borde-claro);
+}
+
+.postulacion-metadata {
+  background: var(--color-fondo-terciario);
+  padding: var(--espaciado-md);
+  border-radius: var(--radio-md);
+  border: 1px solid var(--color-borde-claro);
+}
+
+.postulacion-metadata p {
+  margin: var(--espaciado-xs) 0;
+  color: var(--color-texto);
+  font-size: 0.9rem;
 }
 
 .estudiante-info p {
@@ -302,17 +362,19 @@
 }
 
 /* Modal */
+/* Modal de Detalle */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1000;
+  justify-content: center;
+  z-index: var(--z-modal);
+  padding: var(--espaciado-md);
   animation: fadeIn 0.3s ease-out;
 }
 
@@ -332,17 +394,22 @@
 }
 
 .modal-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid #e9ecef;
-  background: linear-gradient(135deg, #e74c3c, #c0392b);
-  color: white;
-  border-radius: 12px 12px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--espaciado-xl);
+  border-bottom: 1px solid var(--color-borde);
+  background: var(--color-primario);
+  color: var(--color-texto-inverso);
+  border-radius: var(--radio-xl) var(--radio-xl) 0 0;
+  box-shadow: 0 2px 8px rgba(26, 60, 107, 0.3);
 }
 
 .modal-header h2 {
   margin: 0;
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--color-texto-inverso);
 }
 
 .modal-body {
@@ -355,48 +422,64 @@
   line-height: 1.5;
 }
 
+/* Modal de confirmación de rechazo */
 .postulacion-info {
-  background: #f8f9fa;
-  padding: 1rem;
-  border-radius: 8px;
-  margin: 1rem 0;
-  border-left: 4px solid #3498db;
+  background: var(--color-fondo-secundario);
+  padding: var(--espaciado-lg);
+  border-radius: var(--radio-lg);
+  border: 1px solid var(--color-borde-claro);
+  margin: var(--espaciado-lg) 0;
 }
 
-.postulacion-info p {
-  margin: 0.25rem 0;
-  color: #6c757d;
+.estudiante-resumen,
+.pasantia-resumen {
+  margin-bottom: var(--espaciado-md);
+}
+
+.estudiante-resumen h4,
+.pasantia-resumen h4 {
+  color: var(--color-primario);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 var(--espaciado-sm) 0;
+  padding-bottom: var(--espaciado-xs);
+  border-bottom: 1px solid var(--color-secundario);
+}
+
+.estudiante-resumen p,
+.pasantia-resumen p {
+  margin: var(--espaciado-xs) 0;
+  color: var(--color-texto);
   font-size: 0.9rem;
 }
 
 .motivo-container {
-  margin-top: 1.5rem;
+  margin-top: var(--espaciado-lg);
 }
 
 .motivo-container label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--espaciado-sm);
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--color-texto);
 }
 
 .motivo-textarea {
   width: 100%;
-  padding: 1rem;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
-  font-family: inherit;
+  padding: var(--espaciado-md);
+  border: 2px solid var(--color-borde);
+  border-radius: var(--radio-md);
   font-size: 1rem;
+  font-family: inherit;
   resize: vertical;
   min-height: 100px;
-  transition: border-color 0.3s;
-  box-sizing: border-box;
+  transition: all var(--transicion-normal);
 }
 
 .motivo-textarea:focus {
-  border-color: #3498db;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(26, 60, 107, 0.1);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
 .motivo-textarea::placeholder {
@@ -554,4 +637,67 @@
   .postulaciones-header h1 {
     font-size: 1.5rem;
   }
+}
+
+.modal-close {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-texto-inverso);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: var(--espaciado-xs);
+  border-radius: var(--radio-sm);
+  transition: all var(--transicion-normal);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1);
+}
+
+.detalle-seccion {
+  margin-bottom: var(--espaciado-xl);
+  background: var(--color-fondo-secundario);
+  padding: var(--espaciado-lg);
+  border-radius: var(--radio-lg);
+  border: 1px solid var(--color-borde-claro);
+}
+
+.detalle-seccion h3 {
+  color: var(--color-primario);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 var(--espaciado-md) 0;
+  padding-bottom: var(--espaciado-sm);
+  border-bottom: 2px solid var(--color-secundario);
+}
+
+.detalle-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-xs);
+  background: var(--color-fondo);
+  padding: var(--espaciado-md);
+  border-radius: var(--radio-md);
+  border: 1px solid var(--color-borde-claro);
+}
+
+.detalle-label {
+  color: var(--color-texto-secundario);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detalle-valor {
+  color: var(--color-texto);
+  font-weight: 600;
+  font-size: 0.95rem;
 }
