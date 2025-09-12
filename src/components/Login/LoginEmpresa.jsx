@@ -29,7 +29,7 @@ export default function LoginEmpresa() {
       
       if (data.ok) {
         const userData = {
-          role: "empresa",
+          rol: "empresa",
           ...data
         };
         if (data.accessToken) {

@@ -42,15 +42,13 @@ export default function LoginEstudiante() {
       if (data.refreshToken) {
         localStorage.setItem("refreshToken", data.refreshToken);
       }
-      setCurrentUser({
+      const userData = {
         rol: "estudiante",
         ...data
-      });
+      };
+      setCurrentUser(userData);
 
-      localStorage.setItem("usuario", JSON.stringify({
-        role: "estudiante",
-        ...data
-      }));
+      localStorage.setItem("usuario", JSON.stringify(userData));
     } catch (error) {
       setError(error.message || "Error al iniciar sesión");
     } finally {

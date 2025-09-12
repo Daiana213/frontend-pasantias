@@ -10,6 +10,7 @@ export default function HeaderEmpresa() {
   const handleCerrarSesion = () => {
     localStorage.removeItem("usuario");
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
     setCurrentUser(null);
     navigate('/');
   };
@@ -35,9 +36,6 @@ export default function HeaderEmpresa() {
           </button>
           <button onClick={() => navigate('/empresa/evaluacion')} className="nav-link">
             Evaluación
-          </button>
-          <button onClick={() => navigate('/empresa/perfil')} className="nav-link">
-            Perfil
           </button>
           <button onClick={() => navigate('/empresa/configuracion')} className="nav-link">
             Configuración

@@ -11,13 +11,11 @@ import Pasantias from './components/Estudiante/Pasantias/PasantiasEstudiante';
 import MisPostulaciones from './components/Estudiante/Postulaciones/MisPostulaciones';
 import Comunicacion from './components/Estudiante/Comunicacion/ComunicacionEstudiante';
 import Evaluacion from './components/Estudiante/Evaluacion/EvaluacionEstudiante';
-import PerfilEstudiante from './components/Estudiante/Perfil/PerfilEstudiante';
 import Configuracion from './components/Estudiante/Configuracion/ConfiguracionEstudiante';
 import PasantiasEmpresa from './components/Empresa/Pasantias/PasantiasEmpresa';
 import Postulaciones from './components/Empresa/Postulaciones/Postulaciones';
 import ComunicacionEmpresa from './components/Empresa/Comunicacion/ComunicacionEmpresa';
 import EvaluacionEmpresa from './components/Empresa/Evaluacion/EvaluacionEmpresa';
-import PerfilEmpresa from './components/Empresa/Perfil/PerfilEmpresa';
 import ConfiguracionEmpresa from './components/Empresa/Configuracion/ConfiguracionEmpresa';
 import VerificarEmail from './components/Auth/VerificarEmail';
 import PrivateRoute from './components/Auth/PrivateRoute';
@@ -83,14 +81,6 @@ function App() {
           } 
         />
         <Route 
-          path="/perfil-estudiante" 
-          element={
-            <PrivateRoute requiredRole="estudiante">
-              <PerfilEstudiante />
-            </PrivateRoute>
-          } 
-        />
-        <Route 
           path="/configuracion" 
           element={
             <PrivateRoute requiredRole="estudiante">
@@ -129,14 +119,6 @@ function App() {
           element={
             <PrivateRoute requiredRole="empresa">
               <EvaluacionEmpresa />
-            </PrivateRoute>
-          } 
-        />
-        <Route 
-          path="/empresa/perfil" 
-          element={
-            <PrivateRoute requiredRole="empresa">
-              <PerfilEmpresa />
             </PrivateRoute>
           } 
         />

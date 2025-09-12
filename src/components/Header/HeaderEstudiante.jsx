@@ -10,6 +10,7 @@ export default function HeaderEstudiante() {
   const handleCerrarSesion = () => {
     localStorage.removeItem("usuario");
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
     setCurrentUser(null);
     navigate('/');
   };
@@ -32,9 +33,6 @@ export default function HeaderEstudiante() {
           </button>
           <button onClick={() => navigate('/evaluacion')} className="nav-link">
             Evaluación
-          </button>
-          <button onClick={() => navigate('/perfil-estudiante')} className="nav-link">
-            Perfil
           </button>
           <button onClick={() => navigate('/configuracion')} className="nav-link">
             Configuración
