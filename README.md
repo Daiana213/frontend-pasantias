@@ -18,6 +18,7 @@ Este proyecto busca digitalizar y optimizar el proceso de gestión de pasantías
 
 ## Iteraciones 
 - **Drive:** Contiene analisis, diseño y testing del proyecto. https://drive.google.com/drive/folders/1GMV89h_4aoQbDqHnMd4fM0xcCF3p_WxV?usp=sharing
+- **Avances en TP de un Compañero**: https://drive.google.com/drive/folders/16NWT0lix5uTdC5VWPzvveNnsc4nynh6Z?usp=sharing
 
 
 
